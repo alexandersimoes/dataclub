@@ -1,0 +1,48 @@
+# Flask framework
+Jinja2
+Werkzeug
+Flask
+
+# Helper lib for running scripts locally without server
+Flask-Script
+
+# Make managing logged in users easier
+Flask-Login
+
+# Oauth helper for signing in users from facebook, twitter, google
+Flask-OAuth
+
+# Form helper
+Flask-WTF
+
+# Localization
+Flask-Babel
+
+# DB libs for connecting to MySQL
+# WARNING: Must have MySQL server installed!
+MySQL-python
+SQLAlchemy
+Flask-SQLAlchemy
+
+# Redis connector for caching and sessions
+# WARNING: Must have Redis server installed!
+redis
+hiredis
+
+# Better JSON serializer that knows how to handle Decimal types
+simplejson
+
+# Mail
+Flask-Mail
+
+# Cache
+Flask-Cache
+
+# SCSS Compiler
+-e git://github.com/bcarlin/flask-scss.git#egg=Flask-Scss-dev
+
+# Coffeescript Compiler
+flask-coffee2js
+
+# Handle command line arguments for Flickr image grabber script
+click

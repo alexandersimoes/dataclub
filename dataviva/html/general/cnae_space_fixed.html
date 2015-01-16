@@ -1,0 +1,93 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/netflix.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/table.css" />
+  <style>
+  table { width: 100%; }
+  table th a { 
+    color: white;
+  }
+  table th a.asc::after { 
+    content: " ▲";
+  }
+  table th a.desc::after { 
+    content: " ▼";
+  }
+
+  .node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  .node .selected {
+    stroke: red;
+  }
+
+  .link {
+    stroke: #999;
+  }
+
+  .brush .extent {
+    fill-opacity: .1;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
+  
+  section{
+    max-width:inherit;
+  }
+
+  </style>
+
+{% endblock %}
+
+{% block body %}
+
+  <section class="paralax"></section>
+  <section>
+    <div id="cnae"></div>
+  </section>
+  <section>
+    <div id="viz"></div>
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+var visualization = d3plus.viz(),
+    attrs = {};
+
+d3.json('/attrs/cnae/show.6/', function(attr_error, raw_attrs) {
+  d3.json('/static/json/networks/network_cnae.json', function(error, json) {
+    raw_attrs.data.forEach(function(a){
+      attr = {}
+      raw_attrs.headers.forEach(function(d, i){
+        attr[d] = a[i]
+      })
+      attrs[attr["id"]] = attr
+    })
+    json.nodes.forEach(function(d){
+      d.x = +d.x
+      d.y = +d.y
+    })
+  
+    visualization
+      .container("#viz")  // container DIV to hold the visualization
+      .attrs(attrs)
+      .type("network")    // visualization type
+      .id("cnae_id")
+      .data(json.nodes)  // sample dataset to attach to nodes
+      .nodes(json.nodes)   // x and y position of nodes
+      .edges(json.edges) // list of node connections
+      .color("color")
+      .text("name")
+      .draw()             // finally, draw the visualization!
+  });
+});
+</script>
+
+{% endblock %}

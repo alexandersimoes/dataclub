@@ -1,0 +1,7 @@
+*.pyc
+.DS_Store
+.project
+.pydevproject
+*.prefs
+db
+dataviva/static/downloads/*

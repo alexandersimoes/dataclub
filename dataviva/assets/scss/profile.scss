@@ -1,0 +1,133 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/sizes";
+@import "partials/vendor";
+
+main {
+  h2, h3, h4, h5 {
+    text-align: center;
+  }
+}
+
+.toggleStats {
+  @include rounded(15px, top-left);
+  @include rounded(15px, bottom-left);
+  background-color: $grey;
+  color: $white;
+  font-family: $oswald;
+  padding: 5px 10px 5px 15px;
+  position: absolute;
+  right: 0;
+  top: -115px;
+  z-index: 100;
+  &:hover {
+    text-decoration: underline;
+  }
+  i {
+    line-height: 19px;
+    margin-left: 5px;
+  }
+}
+
+/* Small Square Attribute Links */
+.attr {
+  background-color: $grey;
+  color: $lightgrey;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 16px;
+  margin: -1px 0px 3px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+a.attr {
+  @include transition(opacity 0.1s);
+  opacity: 0.9;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* Statistic Tables */
+section.stats {
+
+  @include transition(height 0.5s);
+  background-color: $lightgrey;
+  font-family: $oswald;
+  font-weight: $light;
+  margin: 0;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 0 $gutter/2;
+  position: relative;
+  visibility: hidden;
+
+  section {
+    margin: 110px auto $gutter;
+    padding: 0;
+    & > div {
+      margin: 0 $gutter/2 $gutter/4;
+    }
+  }
+
+  #author {
+    bottom: -$gutter+5;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  h4 {
+    opacity: 0.75;
+    margin: 0 auto $gutter/4;
+    text-align: center;
+  }
+
+  table {
+    margin-bottom: $gutter/4;
+    width: 100%;
+
+    tr {
+      border-bottom: 1px solid #ccc;
+      &.no-border {
+        border-bottom: none;
+      }
+
+      td {
+        font-size: 13px;
+        padding: 3px;
+
+        &:nth-child(even) {
+          text-align: right;
+        }
+        &.viz {
+          padding: 0;
+          .viz {
+            height: 80px;
+          }
+        }
+      }
+
+    }
+
+  }
+
+}
+
+section.first {
+  margin-top: 100px;
+}
+
+/* Dataset Sections */
+.build {
+  height: 600px;
+  margin: $gutter 0 $gutter * 2;
+  position: relative;
+  // width: 100%;
+}

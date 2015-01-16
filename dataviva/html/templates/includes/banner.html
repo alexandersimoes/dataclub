@@ -1,0 +1,102 @@
+{% macro create(profile) %}
+  {%- set palette = profile.palette() -%}
+  {%- set primary = palette[0] -%}
+  {%- set secondary = palette[1] -%}
+  {%- set tertiary = palette[2] -%}
+  <section class="paralax image" data-primary="{{ primary }}" data-secondary="{{ secondary }}" data-tertiary="{{ tertiary }}">
+    <div class="background"><img src="{{ profile.image().url }}"></div>
+    <h1>{{ profile.title() }}</h1>
+    <div class="headlines">
+      <div class="labels">
+        {%- for stat in profile.headlines() -%}
+          {% set label = stat.title() %}
+          {% if label|length > 16 %}
+            <h5>{{ label }}</h5>
+          {% else %}
+            <h4>{{ label }}</h4>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+      <div class="bubbles">
+        {%- for stat in profile.headlines() -%}
+
+          {% set val = stat.format(labels=False) %}
+          {% set url = None %}
+
+          {%- if val is iterable and val is not string -%}
+
+            {% set attr = stat.value()[0][0] %}
+            {% set name = attr.display_id() %}
+
+            {% if attr != profile.attr and attr != profile.filter_attr %}
+              {% if attr.attr() != "bra" and profile.attr.id != "sabra" %}
+                {% set url = attr.url(profile.attr) %}
+              {% elif profile.type == 2 %}
+                {% set url = attr.url(profile.filter_attr) %}
+              {% else %}
+                {% set url = attr.url() %}
+              {% endif %}
+            {% elif attr == profile.attr and profile.type == 2 %}
+              {% set url = attr.url() %}
+            {% endif %}
+
+          {%- else -%}
+
+            {% set name = val or " - "%}
+
+          {%- endif -%}
+
+          {% if url %}<a class="statLink" href="{{ url }}">{% endif %}
+          <div>
+            <div class="stat{% if name|length < 6 %} large{% endif %}"{% if primary %} style="background-color: {{ primary }};"{% endif %}>
+              <div{% if secondary %} style="color: {{ secondary }};"{% endif %}>{{ name }}</div>
+            </div>
+          </div>
+          {% if url %}</a>{% endif %}
+
+        {%- endfor -%}
+      </div>
+      <div class="units">
+        {%- for stat in profile.headlines() -%}
+
+          {% set val = stat.format(labels=False) %}
+          {% set url = None %}
+
+          {%- if val is iterable and val is not string -%}
+
+            {% set attr = stat.value()[0][0] %}
+            {% set unit = attr.name() %}
+
+            {% if attr != profile.attr and attr != profile.filter_attr %}
+              {% if attr.attr() != "bra" and profile.attr.id != "sabra" %}
+                {% set url = attr.url(profile.attr) %}
+              {% elif profile.type == 2 %}
+                {% set url = attr.url(profile.filter_attr) %}
+              {% else %}
+                {% set url = attr.url() %}
+              {% endif %}
+            {% elif attr == profile.attr and profile.type == 2 %}
+              {% set url = attr.url() %}
+            {% endif %}
+
+          {%- else -%}
+            {% set unit = stat.unit() %}
+          {%- endif -%}
+
+          {%- if not unit -%}
+            {% set unit = "&nbsp;" %}
+          {%- endif -%}
+
+          {% if url %}<a class="statLink" href="{{ url }}">{% endif %}
+          {% if unit|length > 16 %}
+            <h5>{{ unit }}</h5>
+          {% else %}
+            <h4>{{ unit }}</h4>
+          {% endif %}
+          {% if url %}</a>{% endif %}
+
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{% endmacro %}

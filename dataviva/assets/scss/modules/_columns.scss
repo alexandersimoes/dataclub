@@ -1,0 +1,14 @@
+@import "partials/media";
+@import "partials/vendor";
+
+$columns: 1, 2, 3, 4;
+
+@each $c in $columns {
+  .flex#{$c} {
+    @include flexSize($c);
+  }
+}
+
+.noFlex {
+  display: block;
+}

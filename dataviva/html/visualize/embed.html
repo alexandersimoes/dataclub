@@ -1,0 +1,17 @@
+{% extends "templates/base.html" %}
+
+{% block title %} : {{ build.title() }}{% endblock %}
+
+{% block head %}
+
+  <script src="/static/js/visualization.js"></script>
+
+{% endblock %}
+
+{% block js %}
+
+  <script>
+    visualization({{ buildJS|safe }});
+  </script>
+
+{% endblock %}

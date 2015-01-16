@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="{{ g.locale }}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="Description" content="{% block description %}{% trans %}DataViva is opening up data for the entire formal sector of the Brazilian economy{% endtrans %} {% trans %}through more than 100 million interactive visualizations.{% endtrans %}{% endblock %}">
+
+    <!-- Facebook Properties -->
+    <meta property="og:image" content="http://www.dataviva.info/static/img/facebook.jpg" />
+
+    <title>
+      DataViva {% block title %}{% endblock %}
+    </title>
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+
+    <link type="text/css" rel="stylesheet" media="all" href="/static/css/site.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="/static/css/libs/font-awesome-4.2.0/css/font-awesome.min.css" />
+
+    <script src="/static/js/libs/modernizr.custom.js"></script>
+    <script src="/static/js/libs/d3plus.full.js"></script>
+    <script src="/static/js/libs/moment.min.js"></script>
+    <script>moment.lang("{{g.locale}}");</script>
+    <script src="/static/js/dataviva.js"></script>
+
+    <script>var redirect = false</script>
+
+    <!--[if lt IE 9]>
+      <script>redirect = true</script>
+    <![endif]-->
+
+    <script>
+      if(d3plus.client.ie && redirect) window.location = "/upgrade/"
+      dataviva.language = "{{ g.locale }}";
+      dataviva.storage = {{ g.storage|safe }};
+      dataviva.dict = {{ g.dict|safe }};
+      dataviva.affixes = {{ g.affixes|safe }};
+      var snapFunctions = [];
+      var resizeFunctions = [];
+      var scrollFunctions = [];
+      var timing = 600;
+    </script>
+
+    {% block head %}
+    {% endblock %}
+
+  </head>
+  <body{% if g.page_type %} class="{{g.page_type}}"{% endif %}>
+
+    {% block content %}
+    {% endblock %}
+
+    <script type="text/javascript">
+
+      if (!window.location.origin) {
+        window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+      }
+
+      dataviva.page = "{{ g.page_type }}";
+
+      function login() {
+        var width = 400,
+            height = 400,
+            left = window.screenX+(window.innerWidth/2)-(width/2),
+            top = window.screenY+(window.innerHeight/2)-(height/2);
+        window.open('/account/login/','','width='+width+',height='+height+',left='+left+',top='+top+',scrollbars=no,resizable=no,location=no,menubar=no,toolbar=no');
+      }
+
+    </script>
+
+    {% block js %}
+    {% endblock %}
+
+    <script>
+
+      if (dataviva.resize) snapFunctions.push(dataviva.resize)
+      if (snapFunctions.length || resizeFunctions.length) {
+        window.onresize = function() {
+          resizeFunctions.forEach(function(f){
+            f(false);
+          });
+          if(this.resizeTO) clearTimeout(this.resizeTO);
+          this.resizeTO = setTimeout(function() {
+            snapFunctions.forEach(function(f){
+              f(true);
+            });
+          },250);
+        };
+      }
+
+      var scrollRuns = function() {
+        scrollFunctions.forEach(function(f){
+          f();
+        });
+      };
+
+      window.onscroll = scrollRuns
+
+    </script>
+
+    <script>
+
+      // Internal Page View Analytics
+      if (location.pathname.length > 1) {
+        setTimeout(function(){
+          d3.json("/account/page_view?page=" + location.pathname).get();
+        }, 5000);
+      }
+
+      // Google Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-42576717-1', window.location.host);
+      ga('send', 'pageview');
+
+    </script>
+
+  </body>
+</html>

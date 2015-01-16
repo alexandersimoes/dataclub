@@ -1,0 +1,51 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/sizes";
+@import "partials/vendor";
+
+#featured {
+
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+
+  .featured_link {
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .pagination {
+
+    bottom: 10px;
+    left: 50%;
+    margin-left: -75px;
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    z-index: 20;
+
+    .page_indicator {
+      @include rounded(5px);
+      @include transition(background-color 0.1s, opacity 0.1s);
+      background-color: $white;
+      display: inline-block;
+      height: 10px;
+      margin: 4px;
+      opacity: 0.5;
+      width: 10px;
+
+      &:hover {
+        @include transform(scale(1.25, 1.25));
+        cursor: pointer;
+      }
+
+      &.active {
+        opacity: 1;
+      }
+
+    }
+
+  }
+
+}

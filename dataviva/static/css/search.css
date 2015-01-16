@@ -1,0 +1,413 @@
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Merriweather'),
+    url(./fonts/merriweather/Merriweather-Regular.otf) format('opentype');
+  unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+  @font-face {
+    font-family: 'Merriweather';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Merriweather'),
+        url(./fonts/merriweather/Merriweather-Regular.otf) format('opentype');
+    unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+        U2212, U2215, UE0FF, UEFFD, UF000; }
+
+    @font-face {
+      font-family: 'Merriweather';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Merriweather Bold'), local('Merriweather-Bold'),
+            url(./fonts/oswald/Merriweather-Bold.otf) format('opentype');
+      unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+      @font-face {
+        font-family: 'Merriweather';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Merriweather Bold'), local('Merriweather-Bold'),
+                url(./fonts/merriweather/Merriweather-Bold.otf) format('opentype');
+        unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+                U2212, U2215, UE0FF, UEFFD, UF000; }
+
+        @font-face {
+          font-family: 'Merriweather';
+          font-style: italic;
+          font-weight: 400;
+          src: local('Merriweather Italic'), local('Merriweather-Italic'),
+                    url(./fonts/merriweather/Merriweather-Italic.otf) format('opentype');
+          unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+          @font-face {
+            font-family: 'Merriweather';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Merriweather Italic'), local('Merriweather-Italic'),
+                        url(./fonts/merriweather/Merriweather-Italic.otf) format('opentype');
+            unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+                        U2212, U2215, UE0FF, UEFFD, UF000; }
+
+            @font-face {
+              font-family: 'Merriweather';
+              font-style: italic;
+              font-weight: 700;
+              src: local('Merriweather Bold Italic'), local('Merriweather-BoldItalic'),
+                            url(./fonts/merriweather/Merriweather-BoldItalic.otf) format('opentype');
+              unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+              @font-face {
+                font-family: 'Merriweather';
+                font-style: italic;
+                font-weight: 700;
+                src: local('Merriweather Bold Italic'), local('Merriweather-BoldItalic'),
+                                url(./fonts/merriweather/Merriweather-BoldItalic.otf) format('opentype');
+                unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+                                U2212, U2215, UE0FF, UEFFD, UF000; }
+
+                @font-face {
+                  font-family: 'Oswald';
+                  font-style: normal;
+                  font-weight: 300;
+                  src: local('Oswald Light'), local('Oswald-Light'),
+                                    url(./fonts/oswald/Oswald-Light.otf) format('opentype');
+                  unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+                  @font-face {
+                    font-family: 'Oswald';
+                    font-style: normal;
+                    font-weight: 300;
+                    src: local('Oswald Light'), local('Oswald-Light'),
+                                        url(./fonts/oswald/Oswald-Light.otf) format('opentype');
+                    unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+                                        U2212, U2215, UE0FF, UEFFD, UF000; }
+
+                    @font-face {
+                      font-family: 'Oswald';
+                      font-style: normal;
+                      font-weight: 400;
+                      src: local('Oswald Regular'), local('Oswald-Regular'),
+                                            url(./fonts/oswald/Oswald-Regular.otf) format('opentype');
+                      unicode-range: U100 -24f, U1 E00-1EFF, U20 A0-20AB, U20 AD-20CF, U2 C60-2C7F, UA720-A7FF; }
+
+                      @font-face {
+                        font-family: 'Oswald';
+                        font-style: normal;
+                        font-weight: 400;
+                        src: local('Oswald Regular'), local('Oswald-Regular'),
+                                                url(./fonts/oswald/Oswald-Regular.otf) format('opentype');
+                        unicode-range: U0 0ff, U131, U152 -153, U2 C6, U2da, U2dc, U2000 -206f, U2074, U20ac,
+                                                U2212, U2215, UE0FF, UEFFD, UF000; }
+.list {
+  display: block;
+  padding: 0; }
+  .list > div {
+    margin: 0 40px; }
+    .list .prev, .list .next {
+      background-position: 40%;
+      background-repeat: no-repeat;
+      background-size: auto 80%;
+      content: "";
+      display: block;
+      font-family: FontAwesome;
+      -webkit-font-smoothing: antialiased;
+      font-style: normal;
+      font-weight: 400;
+      position: absolute;
+      text-align: center;
+      text-decoration: inherit;
+      -webkit-transition: opacity 0.75s, color 0.1s;
+      -moz-transition: opacity 0.75s, color 0.1s;
+      -o-transition: opacity 0.75s, color 0.1s;
+      transition: opacity 0.75s, color 0.1s;
+      color: #aaaaaa;
+      font-size: 50px;
+      line-height: 215px;
+      opacity: 1;
+      width: 40px; }
+      .list .prev:hover, .list .next:hover {
+        color: #af1f24; }
+        .list .prev.disabled, .list .next.disabled {
+          cursor: auto;
+          opacity: 0; }
+  .list .prev {
+    left: 0; }
+    .list .prev:before {
+      content: "\f104"; }
+  .list .next {
+    right: 0; }
+    .list .next:before {
+      content: "\f105"; }
+  .list .scroller {
+    overflow: hidden;
+    position: relative; }
+    .list .scroller .page {
+      -webkit-transition: 0.75s ease-in-out;
+      -moz-transition: 0.75s ease-in-out;
+      -o-transition: 0.75s ease-in-out;
+      transition: 0.75s ease-in-out;
+      list-style-type: none;
+      white-space: nowrap; }
+      .list .scroller .page li {
+        display: inline-block; }
+
+.poster {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.49);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.49);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.49);
+  -webkit-transition: background-position 0.1s;
+  -moz-transition: background-position 0.1s;
+  -o-transition: background-position 0.1s;
+  transition: background-position 0.1s;
+  background-color: #eeeeee;
+  background-position: center top;
+  background-size: auto 110%;
+  box-siizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  height: 200px;
+  margin: 5px;
+  overflow: hidden;
+  position: relative;
+  width: 150px; }
+  .poster:hover {
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75); }
+    .poster .title {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      bottom: 0;
+      color: #444444;
+      display: block;
+      margin: 0;
+      overflow: hidden;
+      padding: 6px 8px 8px;
+      position: absolute;
+      width: 100%;
+      white-space: normal;
+      z-index: 20; }
+      .poster .icon {
+        bottom: 10px;
+        height: 30px;
+        position: absolute;
+        right: 10px;
+        width: 30px; }
+        .poster .icon img {
+          width: 100%; }
+  .poster:hover {
+    background-position: center bottom; }
+    .poster:hover .background > img {
+      height: 120%; }
+#searchBox {
+  font-size: 23.75px;
+  line-height: 60px;
+  padding: 20px;
+  text-align: center; }
+  #searchBox #removeBuild {
+    cursor: pointer;
+    display: none;
+    height: 35px;
+    line-height: 40px;
+    margin: 10px 10px;
+    padding: 0;
+    width: 34px; }
+    #searchBox #removeBuild:before {
+      background-position: 40%;
+      background-repeat: no-repeat;
+      background-size: auto 80%;
+      content: "";
+      display: block;
+      font-family: FontAwesome;
+      -webkit-font-smoothing: antialiased;
+      font-style: normal;
+      font-weight: 400;
+      position: absolute;
+      text-align: center;
+      text-decoration: inherit;
+      color: #eeeeee;
+      content: "\f00d";
+      font-size: 26px;
+      opacity: 1;
+      width: 35px; }
+      #searchBox #removeBuild:hover:before {
+        color: white; }
+  #searchBox #loadBuild {
+    display: none;
+    margin: 12px 8px; }
+    #searchBox .twitter-typeahead {
+      line-height: 30px; }
+      #searchBox #searchItems {
+        z-index: 30; }
+        #searchBox #searchItems > span {
+          margin: 12px 5px; }
+  #searchBox input:focus::-webkit-input-placeholder,
+  #searchBox input:focus:-moz-placeholder, #searchBox input:focus::-moz-placeholder {
+    color: transparent; }
+    #searchBox .lockedAttr {
+      display: inline-block;
+      height: 37px;
+      position: relative; }
+      #searchBox .lockedAttr .tt-hint {
+        color: #ccc; }
+        #searchBox .lockedAttr .typeahead {
+          margin: 0;
+          text-overflow: ellipsis;
+          width: 200px; }
+          #searchBox .lockedAttr .typeahead:disabled {
+            background-color: #ddd !important;
+            cursor: pointer;
+            padding-left: 35px;
+            padding-right: 35px; }
+            #searchBox .lockedAttr .typeahead:disabled:hover {
+              background-color: #eee !important; }
+      #searchBox .lockedAttr .icon {
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        display: block;
+        height: 23px;
+        left: 7px;
+        position: absolute;
+        top: 7px;
+        width: 23px; }
+        #searchBox .lockedAttr .close {
+          color: #aaaaaa;
+          display: block;
+          font-size: 16px;
+          pointer-events: none;
+          position: absolute;
+          right: 25px;
+          top: -11px; }
+          #searchBox .lockedAttr .close:after {
+            background-position: 40%;
+            background-repeat: no-repeat;
+            background-size: auto 80%;
+            content: "";
+            display: block;
+            font-family: FontAwesome;
+            -webkit-font-smoothing: antialiased;
+            font-style: normal;
+            font-weight: 400;
+            position: absolute;
+            text-align: center;
+            text-decoration: inherit;
+            content: "\f00d"; }
+  #searchBox .tt-dropdown-menu {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    border-bottom: 1px solid #af1f24;
+    border-left: 1px solid #af1f24;
+    border-right: 1px solid #af1f24;
+    color: #444444;
+    font-size: 11.85px;
+    max-height: 400px;
+    line-height: 16.59px;
+    margin-top: -1px;
+    overflow-y: scroll;
+    padding: 0;
+    text-align: left;
+    width: 200px; }
+    #searchBox .tt-dropdown-menu .tt-suggestion.tt-cursor .suggestion {
+      background-color: #aaaaaa;
+      color: white;
+      cursor: pointer; }
+    #searchBox .tt-dropdown-menu .tt-suggestion .suggestion-header {
+      color: #af1f24;
+      display: block;
+      padding: 5px 10px; }
+      #searchBox .tt-dropdown-menu .tt-suggestion .suggestion {
+        display: block;
+        padding: 5px 10px;
+        margin: 0; }
+        #searchBox .tt-dropdown-menu .tt-suggestion .suggestion-footer {
+          display: block;
+          padding: 5px 10px 10px;
+          text-align: right; }
+
+.poster {
+  width: 100%; }
+
+  #buildSuggestions {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 2; }
+
+    .advanced {
+      -webkit-transition: opacity 0.1s;
+      -moz-transition: opacity 0.1s;
+      -o-transition: opacity 0.1s;
+      transition: opacity 0.1s;
+      color: white;
+      display: block;
+      font-size: 16px;
+      line-height: 16px;
+      opacity: 0.5; }
+      .advanced:hover {
+        color: white;
+        opacity: 1; }
+
+.builder {
+  height: 500px;
+  overflow: hidden;
+  padding: 0; }
+  .builder > div {
+    display: block;
+    margin: 0;
+    padding: 0; }
+    .builder .search, .builder .viz {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      width: 100%; }
+      .builder .back {
+        color: #aaaaaa;
+        padding: 5px 7px 5px 20px;
+        position: absolute;
+        left: 5px;
+        top: 12px; }
+        .builder .back:hover {
+          color: #af1f24; }
+          .builder .back:before {
+            background-position: 40%;
+            background-repeat: no-repeat;
+            background-size: auto 80%;
+            content: "";
+            display: block;
+            font-family: FontAwesome;
+            -webkit-font-smoothing: antialiased;
+            font-style: normal;
+            font-weight: 400;
+            position: absolute;
+            text-align: center;
+            text-decoration: inherit;
+            content: "\f104";
+            left: 0;
+            top: 7px;
+            width: 20px; }
+  .builder .search {
+    -webkit-transition: left 1s;
+    -moz-transition: left 1s;
+    -o-transition: left 1s;
+    transition: left 1s;
+    overflow: scroll; }
+    .builder .search.hidden {
+      left: -980px; }
+      .builder .search div {
+        background-color: #eeeeee; }
+        .builder .search #removeBuild:before {
+          color: #aaaaaa !important; }
+          .builder .search #removeBuild:hover:before {
+            color: #444444 !important; }
+    .builder .search #results {
+      min-height: 400px;
+      padding: 0 40px 40px; }

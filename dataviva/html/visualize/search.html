@@ -1,0 +1,21 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link rel="stylesheet" type="text/css" href="/static/css/search.css">
+
+{% endblock %}
+
+{% block body %}
+
+  <section id="searchBox" class="paralax"></section>
+  <section id="results"></section>
+
+{% endblock %}
+
+{% block js %}
+
+  {% import "templates/includes/search.html" as search %}
+  {{ search.start() }}
+
+{% endblock %}

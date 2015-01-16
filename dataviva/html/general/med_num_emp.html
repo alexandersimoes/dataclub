@@ -1,0 +1,172 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/netflix.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/table.css" />
+  <style>
+  table { width: 100%; }
+  table th a { 
+    color: white;
+  }
+  table th a.asc::after { 
+    content: " ▲";
+  }
+  table th a.desc::after { 
+    content: " ▼";
+  }
+  
+  </style>
+
+{% endblock %}
+
+{% block body %}
+
+  <section class="paralax"></section>
+  <section>
+    <div id="cnae"></div>
+  </section>
+  <section>
+    <div id="tbl"></div>
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+var cnae = "{{cnae}}";
+var col_name_maps = {
+  "med_num_emp_sm":"Micro (< 10 emps)",
+  "med_num_emp_med":"Small (10 - 49 emps)",
+  "med_num_emp_lg":"Medium (50 - 99 emps)",
+  "med_num_emp_xl":"Large (> 100 emps)"
+}
+if(parseInt(cnae.substr(1,2)) > 4 && parseInt(cnae.substr(1,2)) < 34){
+  col_name_maps["med_num_emp_sm"] = "Micro (< 20 emps)"
+  col_name_maps["med_num_emp_med"] = "Small (20 - 99 emps)"
+  col_name_maps["med_num_emp_lg"] = "Medium (100 - 499 emps)"
+  col_name_maps["med_num_emp_xl"] = "Large (> 500 emps)"
+}
+
+
+function tabulate(data, columns, sort_col, direction) {
+    var table = d3.select("#tbl").selectAll("table").data([0]).enter().append("table").attr("class", "graph-key");
+    table.append("thead").append("tr");
+    table.append("tbody");
+    
+    var thead = d3.select("#tbl table thead tr"),
+        tbody = d3.select("#tbl table tbody"),
+        direction = direction || "desc";
+
+    // Append the header row
+    thead
+      .selectAll("th")
+      .data(columns)
+      .enter()
+      .append("th")
+      .append("a")
+      .text(function (column) {
+        if(col_name_maps[column]){
+          return col_name_maps[column];
+        }
+        return column;
+      })
+      .style("cursor", function(d){
+        if(d.indexOf("med_num_emp") > -1){
+          return "pointer"
+        } else {
+          return "default";
+        }
+      });
+    
+    thead.selectAll("a").attr("class", function(d){
+      if(sort_col == d){
+        return direction;
+      }
+      return ""
+    })
+    .on("click", function(d){
+      if(d.indexOf("med_num_emp") > -1){
+        var dir = "desc"
+        if(d == sort_col){
+          if(direction == "asc"){
+            tabulate(data, columns)
+          } else {
+            dir = direction == "desc" ? "asc" : "desc";
+            tabulate(data, columns, d, dir)
+          }
+        }
+        else{
+          tabulate(data, columns, d, dir)
+        }
+        console.log(dir)
+      }
+    });
+    
+    // Create a row for each object in the data
+    var rows = tbody.selectAll("tr").data(data, function(d) {return d.cbo_id}),
+        rows_enter = rows.enter().append("tr");
+    
+    if(sort_col){
+      rows.sort(function(a, b){
+        if(direction == "desc"){
+          var a_val = a[sort_col] || 0
+          var b_val = b[sort_col] || 0
+        } else {
+          var a_val = a[sort_col] || 99999
+          var b_val = b[sort_col] || 99999
+        }
+        return direction == "desc" ? parseFloat(b_val) - parseFloat(a_val) : parseFloat(a_val) - parseFloat(b_val);
+      })
+    }
+
+    // Create a cell in each row for each column
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            return columns.map(function(column) {
+                return {
+                    column: column,
+                    value: row[column]
+                };
+            });
+        }),
+        cell_enter = cells.enter().append("td");
+        
+    cells.html(function(d) { return d.value; });
+    
+    return table;
+}
+
+d3.json(window.location.pathname+"data", function(err, data){
+  d3.json("/attrs/cbo/", function(err, attrs){
+    data.data.forEach(function(d){
+      cbo = attrs.data.filter(function(a){ return d.cbo_id == a.id })
+      if(cbo.length){
+        d["name"] = cbo[0].name;
+      }
+    })
+    tabulate(data.data, ["year", "name", "med_num_emp_sm", "med_num_emp_med", "med_num_emp_lg", "med_num_emp_xl"], "med_num_emp_xl", "desc");
+    // setTimeout(function() {
+    //   console.log('update!')
+    //   tabulate(data.data, ["year", "name", "med_num_emp_sm", "med_num_emp_med", "med_num_emp_lg", "med_num_emp_xl"], "med_num_emp_xl", "asc");
+    // }, 2000);
+  })
+})
+
+var dropdown = d3plus.form()
+  .container("#cnae")
+  .type("drop")
+  .text("name")
+  .id("id")
+  .data("/attrs/cnae/", function(d){ 
+    return d.data.filter(function(dd){ return dd.id.length == 6; });
+  })
+  .focus("{{cnae}}", function(d){
+    window.location = "/med_num_emp/"+d+"/";
+  })
+  .draw()
+
+</script>
+
+{% endblock %}

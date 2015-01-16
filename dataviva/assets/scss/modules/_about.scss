@@ -1,0 +1,29 @@
+@import "partials/sizes";
+
+#order_toggle {
+  display: block;
+  position: absolute;
+  right: $gutter;
+  text-align: right;
+  top: 3px;
+  width: 200px;
+}
+
+#depths {
+  text-align: center;
+}
+
+.searchLine {
+  position: relative;
+  &:before {
+    @include icon;
+    color: $red;
+    content: unicode("f002");
+    font-size: $large;
+    line-height: $large * 1.55;
+    left: $medium/2;
+  }
+  & > input {
+    padding-left: $large * 1.5;
+  }
+}

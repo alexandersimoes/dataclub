@@ -1,0 +1,257 @@
+
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/sizes";
+@import "partials/vendor";
+
+@import "modules/netflix";
+
+$inputWidth: 200px;
+
+#searchBox {
+  font-size: $large;
+  line-height: 60px;
+  padding: $gutter/2;
+  text-align: center;
+
+  #removeBuild {
+    cursor: pointer;
+    display: none;
+    height: 35px;
+    line-height: 40px;
+    margin: 10px 10px;
+    padding: 0;
+    width: 34px;
+
+    &:before {
+      @include icon;
+      color: $lightgrey;
+      content: unicode("f00d");
+      font-size: 26px;
+      opacity: 1;
+      width: 35px;
+    }
+
+    &:hover {
+      &:before {
+        color: white;
+      }
+    }
+
+  }
+
+  #loadBuild {
+    display: none;
+    margin: 12px 8px;
+  }
+
+  .twitter-typeahead {
+    line-height: 30px;
+  }
+
+  #searchItems {
+    z-index: 30;
+    & > span {
+      margin: 12px 5px;
+    }
+  }
+
+  & input:focus::-webkit-input-placeholder,
+  & input:focus:-moz-placeholder,
+  & input:focus::-moz-placeholder {
+    color: transparent;
+  }
+
+  .lockedAttr {
+
+    display: inline-block;
+    height: 37px;
+    position: relative;
+
+    .tt-hint {
+      color: #ccc;
+    }
+
+    .typeahead {
+      margin: 0;
+      text-overflow: ellipsis;
+      width: $inputWidth;
+
+      &:disabled {
+        background-color: #ddd !important;
+        cursor: pointer;
+        padding-left: 35px;
+        padding-right: 35px;
+        &:hover {
+          background-color: #eee !important;
+        }
+      }
+    }
+
+    .icon {
+      background-position: 50%;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      display: block;
+      height: 23px;
+      left: 7px;
+      position: absolute;
+      top: 7px;
+      width: 23px;
+    }
+
+    .close {
+      color: $grey;
+      display: block;
+      font-size: $medium;
+      pointer-events: none;
+      position: absolute;
+      right: 25px;
+      top: -11px;
+
+      &:after {
+        @include icon;
+        content: unicode("f00d");
+      }
+    }
+
+  }
+
+  .tt-dropdown-menu {
+    @include box(border-box);
+    @include shadow( 0 3px 5px rgba(0,0,0,.5));
+    background-color: white;
+    border-bottom: 1px solid #af1f24;
+    border-left: 1px solid #af1f24;
+    border-right: 1px solid #af1f24;
+    color: $black;
+    font-size: $small;
+    max-height: 400px;
+    line-height: $small * 1.4;
+    margin-top: -1px;
+    overflow-y: scroll;
+    padding: 0;
+    text-align: left;
+    width: $inputWidth;
+
+    .tt-suggestion {
+      // display: block;
+
+      &.tt-cursor {
+        .suggestion {
+          background-color: $grey;
+          color: white;
+          cursor: pointer;
+        }
+      }
+
+      .suggestion-header {
+        color: $red;
+        display: block;
+        padding: 5px 10px;
+      }
+
+      .suggestion {
+        display: block;
+        padding: 5px 10px;
+        margin: 0;
+      }
+
+      .suggestion-footer {
+        display: block;
+        padding: 5px 10px 10px;
+        text-align: right;
+      }
+
+    }
+
+  }
+
+}
+
+.poster {
+  width: 100%;
+}
+
+#buildSuggestions {
+  @include flexSize(2);
+}
+
+.advanced {
+  @include transition(opacity 0.1s);
+  color: white;
+  display: block;
+  font-size: $medium;
+  line-height: $medium;
+  opacity: 0.5;
+  &:hover {
+    color: white;
+    opacity: 1;
+  }
+}
+
+// Builder Page Specific
+.builder {
+  height: 500px;
+  overflow: hidden;
+  padding: 0;
+
+  & > div {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .search, .viz {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  .back {
+    color: $grey;
+    padding: 5px 7px 5px 20px;
+    position: absolute;
+    left: 5px;
+    top: 12px;
+
+    &:hover {
+      color: $red;
+    }
+
+    &:before {
+      @include icon;
+      content: unicode("f104");
+      left: 0;
+      top: 7px;
+      width: 20px;
+    }
+  }
+
+  .search {
+    @include transition(left 1s);
+    overflow: scroll;
+
+    &.hidden {
+      left: -$width;
+    }
+
+    div {
+      background-color: $lightgrey;
+    }
+
+    #removeBuild:before {
+      color: $grey !important;
+      &:hover {
+        color: $black !important;
+      }
+    }
+
+    #results {
+      min-height: 400px;
+      padding: 0 $gutter $gutter;
+    }
+  }
+
+}

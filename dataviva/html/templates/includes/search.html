@@ -1,0 +1,18 @@
+{% macro start(profiles=True, builds=True, input="#searchBox", results="#results", callback="", build=0) %}
+
+  <script src="/static/js/search.js"></script>
+
+  <script>
+
+    dataviva.search({
+      "build": {{ build|safe }},
+      "builds": "{{ builds }}" === "True",
+      "callback": "{{ callback }}",
+      "input": "{{ input }}",
+      "profiles": "{{ profiles }}" === "True",
+      "results": "{{ results }}"
+    });
+
+  </script>
+
+{% endmacro %}

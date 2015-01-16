@@ -1,0 +1,72 @@
+<!-- <div id="hamburger">
+  <span class="burgerLine top"></span>
+  <span class="burgerLine middle"></span>
+  <span class="burgerLine bottom"></span>
+</div> -->
+
+<a id="logo" href="{{ url_for('general.home') }}"></a>
+
+<div id="links">
+
+  <a id="visualize" href="/" class="link{% if g.page_type == 'visualize' or g.page_type == 'profile' %} active{% endif %}">
+    <div class="icon"></div>
+    {% trans %}Visualize{% endtrans %}
+  </a>
+  <a id="data" href="#" class="link disable{% if g.page_type == 'data' %} active{% endif %}">
+    <div class="icon"></div>
+    {% trans %}Download{% endtrans %}
+  </a>
+  <a id="about" href="#" class="link{% if g.page_type == 'about' %} active{% endif %}">
+    <div class="icon"></div>
+    {% trans %}Join{% endtrans %}
+  </a>
+
+  <div id="search">
+    <i class="fa fa-search"></i>
+    <input id="navSearch" type="text" class="typeahead" placeholder="{% trans %}Search{% endtrans %}">
+  </div>
+
+  <!-- <div id="language">
+    <select id="language_select">
+      <option value="en"{% if g.locale == 'en' %} selected{% endif %}>English</option>
+      <option value="pt"{% if g.locale == 'pt' %} selected{% endif %}>Portuguêse</option>
+    </select>
+  </div>
+
+  <div id="account">
+    {% if g.user.is_authenticated() %}
+      {{ g.user.nickname }}
+    {% else %}
+      <i class="fa fa-user"></i>{% trans %}User Login{% endtrans %}
+    {% endif %}
+  </div>
+
+  {% if g.user.is_authenticated() %}
+    <div id="account_tooltip" style="display:none;">
+      <a class="account" href="{{ url_for('account.user', nickname=g.user.nickname) }}">
+        <i class="fa fa-user"></i>{% trans %}Profile{% endtrans %}
+      </a>
+      {% if g.user.is_admin() %}
+        <a class="account" href="{{ url_for('admin.admin') }}">
+          <i class="fa fa-cogs"></i>{% trans %}Admin Panel{% endtrans %}
+        </a>
+      {% endif %}
+      <a class="account" href="{{ url_for('account.logout') }}">
+        <i class="fa fa-key"></i>{% trans %}Logout{% endtrans %}
+      </a>
+
+    </div>
+  {% endif %} -->
+
+</div>
+
+<!-- {% if g.page_type == 'about' %}
+  <div class="subnav {{ g.page_type }}">
+    <div class="triangle"></div>
+      {% include "templates/includes/about.html" %}
+  </div>
+{% endif %} -->
+
+{% for category, msg in get_flashed_messages(with_categories=true) %}
+  <div id="server_message">{{ msg|safe }}</div>
+{% endfor %}

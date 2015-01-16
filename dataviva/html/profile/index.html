@@ -1,0 +1,141 @@
+{% extends "templates/sidebar.html" %}
+
+{% set title = profile.title() %}
+
+{% block title %}: {{ title }}{% endblock %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/profile.css" />
+
+{% endblock %}
+
+{% block legend %}
+  <ul>
+    <a href="#"><li class="depth_0">{{ profile.title() }}</li></a>
+    {% for section in profile.sections() recursive %}
+      {% if section.title and section.anchor %}
+        <a href="#{{ section.anchor }}"><li id="link_{{ section.anchor }}" class="depth_{{ loop.depth }}">{{ section.title }}</li></a>
+      {% endif %}
+      {% if section.sections %}
+        {{ loop(section.sections) }}
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+{% endblock %}
+
+{% import "templates/includes/banner.html" as banner %}
+
+{% block body %}
+
+  {{ banner.create(profile) }}
+
+  <section class="stats"><section>
+    {% set lastCol = 1 %}
+    {% for category in profile.stats() %}
+      {% if loop.first %}
+        <div class="flex{% if category.width %}{{ category.width }}{% else %}1{% endif %}">
+      {% elif not category.col or lastCol < category.col %}
+        </div><div{% if category.width %} class="flex{{ category.width }}"{% endif %}>
+        {% set lastCol = category.col %}
+      {% endif %}
+      <h4>{{ category.title }}</h4>
+      <table>
+      {% for stat in category.stats %}
+        <tr{% if loop.last %} class="no-border"{% endif %}>
+          {% set title = stat.title() %}
+          {% if title %}
+            <td>{{ title }}</td>
+            <td>
+            {% set value = stat.format() %}
+            {% if value is iterable and value is not string %}
+              {% for item in stat.value() %}
+                {% if item is iterable and value is not string %}
+                  {% set item = item[0] %}
+                {% endif %}
+                {% if item %}
+                  <a href="{{ item.url() }}">
+                    {{ value[loop.index0] }}
+                  </a>{% if not loop.last %}, {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {{ value }}
+            {% endif %}
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </table>
+      {% if loop.last %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% set image = profile.image() %}
+    {% if image.author %}
+      <div id="author">Image provided by <a href="{{ image.link }}" target="_blank">{{ image.author }}</a></div>
+    {% endif %}
+  </section></section>
+
+  <section class="noFlex first">
+
+    <a class="toggleStats">{% trans %}Additional Statistics{% endtrans %}<i class="fa fa-th-list"></i></a>
+
+    {% set summary = profile.summary() %}
+    {% if summary %}
+      <h2>{% trans %}Summary{% endtrans %}</h2>
+      {% for p in summary %}
+        <p>{% autoescape false %}{{ p }}{% endautoescape %}</p>
+      {% endfor %}
+    {% endif %}
+
+    {% set buildIndex = [] %}
+    {% for section in profile.sections() recursive %}
+
+      {% if section.title %}
+        {% if loop.depth == 1 %}</section><section class="paralax">{% endif %}
+        {% if section.anchor %}<a class="section_link" id="{{ section.anchor }}" href="#{{ section.anchor }}">{% endif %}
+        <h{{ loop.depth }}>{{ section.title }}</h{{ loop.depth }}>
+        {% if section.anchor %}</a>{% endif %}
+        {% if loop.depth == 1 %}</section><section class="noFlex">{% endif %}
+      {% endif %}
+
+      {% if section.summary %}
+        {% for p in section.summary %}
+          <p>{% autoescape false %}{{ p }}{% endautoescape %}</p>
+        {% endfor %}
+      {% endif %}
+
+      {% if section.builds %}
+        {% for build in section.builds %}
+          {% set desc = build.description() %}
+          {% if desc %}
+            {% for p in desc %}
+              <p>{% autoescape false %}{{ p }}{% endautoescape %}</p>
+            {% endfor %}
+          {% endif %}
+          <div id="build_{{ buildIndex|length }}" class="build"></div>
+          {% do buildIndex.append(0) %}
+        {% endfor %}
+      {% endif %}
+
+      {% if section.sections %}
+        {{ loop(section.sections) }}
+      {% endif %}
+
+    {% endfor %}
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+  <script>
+    dataviva.builds = {{ builds|safe}};
+  </script>
+
+  <script src="/static/js/visualization.js"></script>
+  <script src="/static/js/profile.js"></script>
+
+{% endblock %}

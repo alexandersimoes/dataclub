@@ -1,0 +1,101 @@
+@import "partials/colors";
+@import "partials/sizes";
+
+h1, h2, h3, h4, h5 {
+  color: $black;
+  font-family: $oswald;
+  font-weight: $normal;
+}
+
+h1 {
+  font-size: 44px;
+  line-height: 56px;
+  .icon {
+    display: inline-block;
+    height: 60px;
+    margin-right: 10px;
+    width: 60px;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+h2, h3 {
+  font-size: 32px;
+  margin: 40px auto 20px;
+}
+
+// h3 {
+//   font-size: 24px;
+//   margin: 10px auto;
+// }
+
+h4 {
+  font-size: 18px;
+  margin: 10px auto;
+}
+
+h5 {
+  font-size: 13px;
+  margin: 10px auto;
+}
+
+p {
+  font-size: 13px;
+  line-height: 22px;
+  margin: 13px auto;
+  max-width: $textWidth;
+  a {
+    font-weight: $bold;
+//    text-decoration: underline;
+  }
+}
+
+// $titleMap: (
+//   h1: ($xxlarge 1.1 $light $gutter/2),
+//   h2: ($xlarge 1.2 $light $gutter/2),
+//   h3: ($large 1.3 $light $gutter/2),
+//   h4: ($medium 1.4 $normal 0),
+//   p: ($medium 1.4 $normal $gutter/2),
+//   blockquote: ($medium 1.4 $normal $gutter/2),
+//   sub: ($small 1.4 $normal 0)
+// );
+//
+// @each $tag, $info in $titleMap {
+//
+//   $size    = nth($info, 1);
+//   $spacing = nth($info, 2);
+//   $weight  = nth($info, 3);
+//   $margin  = nth($info, 4);
+//
+//   #{$tag} {
+//     display: block;
+//     font-size: $size;
+//     font-weight: $weight;
+//     line-height: $size * $spacing;
+//     margin: 0 0 $margin;
+//
+//     & > i {
+//       font-size: $size/2;
+//       line-height: ($size/2) * $spacing;
+//     }
+//
+//   }
+//
+//   section.paralax #{$tag} {
+//     text-shadow: 0 0 $size * 0.4 black;
+//     padding-left: $gutter;
+//   }
+//
+// }
+//
+// h4 {
+//   color: $red;
+// }
+//
+// blockquote {
+//   color: $grey;
+//   font-style: italic;
+//   letter-spacing: 1px;
+// }

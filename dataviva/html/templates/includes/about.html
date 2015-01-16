@@ -1,0 +1,18 @@
+<a class="link{% if g.subpage_type == 'contact' %} active{% endif %}" href="{{ url_for('about.contact') }}">
+  {% trans %}Contact Us{% endtrans %}
+</a>
+<a class="link{% if g.subpage_type == 'data' %} active{% endif %}" href="{{ url_for('about.data', data='rais') }}">
+  {% trans %}Data Sources{% endtrans %}
+</a>
+<a class="link{% if g.subpage_type == 'attrs' %} active{% endif %}" href="{{ url_for('about.attrs', attr='bra', depth='2') }}">
+  {% trans %}Classifications{% endtrans %}
+</a>
+<a class="link{% if g.subpage_type == 'apps' %} active{% endif %}" href="{{ url_for('about.apps', app='about') }}">
+  {% trans %}About the Apps{% endtrans %}
+</a>
+<a class="link{% if g.subpage_type == 'analysis' %} active{% endif %}" href="{{ url_for('about.analysis') }}">
+  {% trans %}Crosswalk Tables{% endtrans %}
+</a>
+<a class="link{% if g.subpage_type == 'glossary' %} active{% endif %}" href="{{ url_for('about.glossary', term='complexity') }}">
+  {% trans %}Glossary{% endtrans %}
+</a>

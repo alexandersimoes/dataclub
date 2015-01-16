@@ -1,0 +1,307 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/netflix.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/table.css" />
+  <style>
+  table { width: 100%; }
+  table th a { 
+    color: white;
+  }
+  table th a.asc::after { 
+    content: " ▲";
+  }
+  table th a.desc::after { 
+    content: " ▼";
+  }
+
+  .node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  .node .selected {
+    stroke: red;
+  }
+
+  .link {
+    stroke: #999;
+  }
+
+  .brush .extent {
+    fill-opacity: .1;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
+  
+  section{
+    max-width:inherit;
+  }
+
+  </style>
+
+{% endblock %}
+
+{% block body %}
+
+  <section class="paralax"></section>
+  <section>
+    <div id="cnae"></div>
+  </section>
+  <section>
+    <div id="viz"></div>
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+var nodeid2size, row, _i, _len, _ref;
+var width = 1460,
+    height = 900,
+    color = d3.scale.category20(),
+    node_lookup = {},
+    shiftKey;
+
+    var edges;
+
+  // d3.json('/static/json/lattes_network.json', function(error, json) {
+// d3.json('/static/json/cnae_space.json', function(error, json) {
+d3.json('/cnae_space/data/', function(error, json) {
+  
+  json.edges = json.data;
+  
+  json.data.forEach(function(d){
+    if(node_lookup[d.source]){
+      node_lookup[d.source] += 1
+    } else {
+      node_lookup[d.source] = 1
+    }
+    if(node_lookup[d.target]){
+      node_lookup[d.target] += 1
+    } else {
+      node_lookup[d.target] = 1
+    }
+  })
+  json.nodes = json.data.map(function(d){ return d.source })
+  json.nodes = json.nodes.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+  json.nodes = json.nodes.map(function(d){
+    return {"id":d, "name":"my_name"}
+  })
+  
+  var mean = d3.mean(json.edges, function(edge) { return edge.prox; });
+  var stdev = Math.sqrt(d3.mean(json.edges.map(function(edge) {
+        return (edge.prox - mean) * (edge.prox - mean);
+      })));
+  console.log(mean, stdev)
+  json.edges.forEach(function(edge) {
+    edge.jaccard = (edge.prox - mean)/stdev;
+    // return edge.prox = Math.random();
+    // return edge.prox = (edge.prox - mean) / stdev;
+  });
+  console.log(json.edges.length)
+  x = {}
+  json.edges = json.edges.filter(function(e){
+    if(x[node_lookup[e.source]]){
+      x[node_lookup[e.source]] += 1
+    }else{
+      x[node_lookup[e.source]] = 1
+    }
+    if(x[node_lookup[e.target]]){
+      x[node_lookup[e.target]] += 1
+    }else{
+      x[node_lookup[e.target]] = 1
+    }
+    // if(e.source == "a01130"){
+    //   console.log(node_lookup[e.source], e)
+    // }
+    // if(node_lookup[e.source]<=3 || node_lookup[e.target]<=3){
+    //   console.log(e.source, e.target)
+    //   return true;
+    // }
+    // return e.jaccard >= -1;
+    return true
+  })
+  // console.log(x)
+  console.log(json.edges.length)
+  
+  json.edges.forEach(function(d) {
+    d.source = json.nodes.filter(function(dd){ return dd.id == d.source})[0]
+    d.target = json.nodes.filter(function(dd){ return dd.id == d.target})[0]
+  });
+  // console.log(json.edges)
+  
+  force = d3.layout.force();
+  force
+    .nodes(json.nodes)
+    .links(json.edges)
+    .size([width, height])
+    // .charge(-10)
+    // .chargeDistance(1000)
+    // .gravity(0.05)
+    // .friction(0.975)
+    // .linkStrength(function(d){ return d.prox; })
+    .start();
+  for (i = _m = 0; _m < 500; i = ++_m) {
+    force.tick();
+    if(force.alpha() < 0.01) {
+      break;
+    }
+  }
+  force.stop();
+  
+  // document.write("<pre>");
+  // var _ref4 = json.nodes;
+  // for (_n = 0, _len4 = _ref4.length; _n < _len4; _n++) {
+  //   node = _ref4[_n];
+  //   document.write(node.id + '\t' + node.x.toFixed(3) + '\t' + node.y.toFixed(3) + '\n');
+  // }
+  // document.write("</pre>");
+  
+  // return visualization = d3plus.viz()
+  //                         .container("#viz")
+  //                         .type("network")
+  //                         .data(json.data)
+  //                         .nodes(json.nodes)
+  //                         .nodes({overlap: 1.5})
+  //                         .edges(json.data)
+  //                         .id("id")
+  //                         // .size("size")
+  //                         .size({scale: d3.scale.linear()})
+  //                         // .text("enName")
+  //                         // .color("color")
+  //                         .draw();
+
+  var svg = d3.select("body")
+      .attr("tabindex", 1)
+      .on("keydown.brush", keydown)
+      .on("keyup.brush", keyup)
+      .each(function() { this.focus(); })
+    .select("#viz").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  var link = svg.append("g")
+      .attr("class", "link")
+    .selectAll("line");
+
+  var brush = svg.append("g")
+      .datum(function() { return {selected: false, previouslySelected: false}; })
+      .attr("class", "brush");
+
+  var node = svg.append("g")
+      .attr("class", "node")
+    .selectAll("circle");
+
+  link = link.data(json.edges).enter().append("line")
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+  brush.call(d3.svg.brush()
+        .x(d3.scale.identity().domain([0, width]))
+        .y(d3.scale.identity().domain([0, height]))
+        .on("brushstart", function(d) {
+          node.each(function(d) { d.previouslySelected = shiftKey && d.selected; });
+        })
+        .on("brush", function() {
+          var extent = d3.event.target.extent();
+          node.classed("selected", function(d) {
+            return d.selected = d.previouslySelected ^
+                (extent[0][0] <= d.x && d.x < extent[1][0]
+                && extent[0][1] <= d.y && d.y < extent[1][1]);
+          });
+        })
+        .on("brushend", function() {
+          d3.event.target.clear();
+          d3.select(this).call(d3.event.target);
+        }));
+
+  node = node.data(json.nodes).enter().append("circle")
+      .attr("fill", function(d, i){
+        return color(d.id.substr(0, 1))
+      })
+      .attr("r", 4)
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .on("mousedown", function(d) {
+        if (!d.selected) { // Don't deselect on shift-drag.
+          if (!shiftKey) node.classed("selected", function(p) { return p.selected = d === p; });
+          else d3.select(this).classed("selected", d.selected = true);
+        }
+      })
+      // .on("click", function(d){ console.log(node_lookup[d.id], d); })
+      .on("mouseup", function(d) {
+        
+        // put x/y coords into local storage to fetch for later
+        d3.selectAll(".selected").each(function(dd){
+          localStorage.setItem(dd.id, JSON.stringify({"cnae_id":dd.id, "x":dd.x.toFixed(3), "y":dd.y.toFixed(3)}))
+        })
+        
+        if (d.selected && shiftKey) d3.select(this).classed("selected", d.selected = false);
+      })
+      .call(d3.behavior.drag()
+        .on("drag", function(d) { nudge(d3.event.dx, d3.event.dy); }));
+
+  function nudge(dx, dy) {
+    node.filter(function(d) { return d.selected; })
+        .attr("cx", function(d) { return d.x += dx; })
+        .attr("cy", function(d) { return d.y += dy; })
+
+    link.filter(function(d) { return d.source.selected; })
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; });
+
+    link.filter(function(d) { return d.target.selected; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    d3.event.preventDefault();
+  }
+
+  function keydown() {
+    if (!d3.event.metaKey) switch (d3.event.keyCode) {
+      case 38: nudge( 0, -1); break; // UP
+      case 40: nudge( 0, +1); break; // DOWN
+      case 37: nudge(-1,  0); break; // LEFT
+      case 39: nudge(+1,  0); break; // RIGHT
+    }
+    shiftKey = d3.event.shiftKey || d3.event.metaKey;
+  }
+
+  function keyup() {
+    shiftKey = d3.event.shiftKey || d3.event.metaKey;
+  }
+  
+  d3.selectAll("circle").each(function(d){
+    localStorage.setItem(d.id, JSON.stringify({"cnae_id":d.id, "x":d.x.toFixed(3), "y":d.y.toFixed(3)}))
+  })
+  
+  edges = json.edges.map(function(d){
+    return {
+      "source":d.source.id,
+      "target":d.target.id,
+      "strength":d.prox
+    }
+  })
+  
+});
+
+function print_nodes() {
+  nodes = "["
+  d3.selectAll("circle").each(function(d, i){
+    if (i==0){
+      nodes += localStorage.getItem(d.id)
+    } else {
+      nodes += ", "+localStorage.getItem(d.id)
+    }
+  })
+  nodes += "]"
+  console.log(nodes)
+}
+</script>
+
+{% endblock %}

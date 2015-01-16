@@ -1,0 +1,31 @@
+{% extends "templates/site.html" %}
+
+{% block title %}: {% trans %}Data Sources{% endtrans %}{% endblock %}
+
+{% block body %}
+
+  <section>
+
+    <div class="flex1">
+
+        <a class="decision{% if data == 'rais' %} active{% endif %} icon rais" href="{{ url_for('about.data', data='rais')}}">
+          RAIS
+        </a>
+
+        <a class="decision{% if data == 'secex' %} active{% endif %} icon secex" href="{{ url_for('about.data', data='secex')}}">
+          SECEX/MDIC
+        </a>
+
+        <a class="decision{% if data == 'comtrade' %} active{% endif %} icon comtrade" href="{{ url_for('about.data', data='comtrade')}}">
+          UN Comtrade
+        </a>
+
+    </div>
+
+    <div class="flex3">
+      {% include "about/data/"+data+".html" %}
+    </div>
+
+  </section>
+
+{% endblock %}

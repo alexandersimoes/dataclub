@@ -1,0 +1,59 @@
+{% extends "templates/site.html" %}
+
+{% block title %}: {% trans %}Contact Us{% endtrans %}{% endblock %}
+
+{% block body %}
+
+  <section>
+
+    <div class="flex1">
+
+      <p>{% trans %}DataViva is a visualization tool that provides official data on exports, economic activities, locations and occupations throughout Brazil, in eight applications and over 100 million views. {% endtrans %}</p>
+
+      <p>{% trans %}Through its views, DataViva provides valuable for promoting exports to investment decisions and policymaking information. Moreover, by providing facts about economic development, localities and their respective opportunities, DataViva helps create a solid basis for dialogue between the public and the private sector, supported by empirical data.{% endtrans %}</p>
+
+    <a {% if g.user.is_authenticated() %}href="/about/ask/"{%else%}onclick="login()"{%endif%} class="decision icon button questions">
+      {% trans %}Can't find an answer?{% endtrans %} {% trans %}Send your question to us here!{% endtrans %}
+    </a>
+
+    </div>
+    <div class="flex2">
+
+      {% if g.accounts %}
+
+      <h2>{% trans %}Frequently Asked Questions{% endtrans %}</h2>
+      <div class="searchLine">{{ search_form.search(size=60, id='ask_search', placeholder=_("Search")) }}</div>
+
+      <div id="order_toggle">
+        <input type="radio" name="order" value="votes" id="votes" checked="checked">
+        <label for="votes">{% trans %}Most Active{% endtrans %}</label>
+        <input type="radio" name="order" value="newest" id="newest">
+        <label for="newest">{% trans %}Most Recent{% endtrans %}</label>
+      </div>
+
+      <div id="question_feed"></div>
+
+      {% else %}
+
+        <a href="http://www.dataviva.info/about/ask/" class="decision icon questions">
+          {% trans %}The version of DataViva that you are viewing does not support user accounts. Click here to contact us through the main website.{% endtrans %}
+        </a>
+
+      {% endif %}
+
+    </div>
+
+  </section>
+
+{% endblock %}
+
+{% if g.accounts %}
+
+  {% block js %}
+
+    <script src="/static/js/infinite_scroll.js"></script>
+    <script src="/static/js/contact.js"></script>
+
+  {% endblock %}
+
+{% endif %}

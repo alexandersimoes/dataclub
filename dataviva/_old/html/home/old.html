@@ -1,0 +1,196 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/home.css" />
+
+{% endblock %}
+
+{% block body %}
+
+  <div class="darkbox"><h1>{% trans %}Visualizing the Economy of Brazil{% endtrans %}</h1></div>
+  <div class="home_sub">
+    {% trans %}DataViva is opening up data for the entire formal sector of the Brazilian economy{% endtrans %}
+      <br>
+    {% trans %}through more than 100 million interactive visualizations.{% endtrans %}
+  </div>
+
+  <div id="intro">
+    <div id="carousel">
+      <div class="centered">
+        <a class="decision">{%trans%}See More{%endtrans%}</a>
+      </div>
+    </div>
+    <div class="pages"></div>
+  </div>
+
+  <div class="bottom_section" style="margin-top:100px">
+
+    <div class="bottom_title">
+      <h1>{% trans %}Also browse{% endtrans %}:</h1>
+    </div>
+
+    <a class="decision icon square apps" href="/apps/">
+      <h1>{% trans %}Apps{% endtrans %}</h1>
+      <p>{% trans %}Explore the Brazilian economy through over 100 million visualizations.{% endtrans %}</p>
+    </a>
+
+    <a class="decision icon square profiles" href="/profiles/">
+      <h1>{% trans %}Profiles{% endtrans %}</h1>
+      <p>{% trans %}Quickly learn about the exports, occupations, and industries of each Brazilian state and economic sector.{% endtrans %}</p>
+    </a>
+
+    <a class="decision icon square guide" href="/guide/">
+      <h1>{% trans %}Guide{% endtrans %}</h1>
+      <p>{% trans %}Answer strategic questions about economic opportunities of states and industries.{% endtrans %}</p>
+    </a>
+
+    <a class="decision icon square rankings" href="/rankings/">
+      <h1>{% trans %}Rankings{% endtrans %}</h1>
+      <p>{% trans %}Compare locations, industries and occupations based on economic output, diversity, and salaries.{% endtrans %}</p>
+    </a>
+
+  </div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+  var carousel = [
+    {
+      "en": "What are the export opportunities in Brazil?",
+      "pt": "Quais são as oportunidades de exportação no Brasil?",
+      "color": "#c9532f",
+      "image": "sparks",
+      "url": "/guide/bra/all/opportunity/hs/"
+    },
+    {
+      "en": "What are the main occupations in Brazil?",
+      "pt": "Quais são as principais ocupações no Brasil?",
+      "color": "#129cc0",
+      "image": "lab",
+      "url": "/apps/builder/stacked/rais/all/all/all/cbo/?controls=true&value_var=num_emp&sort=color&depth=cbo_1&layout=value&order=asc"
+    },
+    {
+      "en": "Did you know that China is the largest destination of brazilian expots?",
+      "pt": "Você sabia que a China é o principal destino das exportações brasileiras?",
+      "color": "#516043",
+      "image": "factory",
+      "url": "/apps/builder/tree_map/secex/all/all/all/wld/?controls=true&year=2012&value_var=val_usd&depth=wld_5"
+    },
+    {
+      "en": "Which industries in Brazil employ Electrical Engineers?",
+      "pt": "Quais atividades econômicas mais empregam Engenheiros Eletricistas?",
+      "color": "#2a2948",
+      "image": "board",
+      "url": "/apps/builder/tree_map/rais/all/all/2143/isic/?controls=true&year=2012&value_var=num_emp&depth=isic_5&color_var=color"
+    }
+  ]
+
+
+  var app = 1, stopped = false, changing = false
+
+  d3.select("#carousel .decision")
+    .on(d3plus.client.pointer.click,function(){
+      window.location = carousel[app-1].url
+    })
+
+  var apps = d3.select("#carousel").selectAll(".app")
+    .data(carousel)
+
+  apps.enter().append("div")
+    .attr("class","app")
+    .attr("id",function(d,i){return "app_"+(i+1)})
+    .style("background-image",function(d){return d.image != "video" ? "url('/static/img/home/"+d.image+".jpg')" : "none"})
+    .style("opacity",function(d,i){
+      if (i+1 == app) return 1
+      else return 0
+    })
+    .style("display",function(d,i){
+      if (i+1 == app) return "block"
+      else return "none"
+    })
+    // .style("background-color",function(d){return d.color})
+    .each(function(d){
+      if (d.image == "video") {
+        d3.select(this)
+          .style("z-index",20)
+          .append("iframe")
+            .attr("src",d.url)
+            .attr("width","475")
+            .attr("height","267")
+            .attr("frameborder","0")
+            .attr("allowfullscreen",true)
+            .attr("mozallowfullscreen",true)
+            .attr("webkitallowfullscreen",true)
+      }
+    })
+    .on(d3plus.client.pointer.over,function(d){
+      stopped = true
+    })
+
+  var pages = d3.select(".pages").selectAll(".page")
+    .data(carousel)
+
+  pages.enter().append("div")
+    .attr("class","page")
+    .attr("id",function(d,i){return "page_"+(i+1)})
+    .each(function(d,i){
+      d3.select(this).append("div").attr("class","page_helper")
+      d3.select(this).append("div")
+        .attr("class","page_text")
+        .html(function(d){return d[dataviva.language]})
+      if (i+1 == app) {
+        this.toggleClass("active")
+        this.style.borderColor = carousel[app-1].color
+        this.style.backgroundColor = carousel[app-1].color
+        d3.select(".darkbox").node().style.color = carousel[app-1].color
+      }
+    })
+
+  pages.on(d3plus.client.pointer.click,function(d,i){
+    stopped = true
+    show_app(i+1)
+  })
+
+  function change_app() {
+    setTimeout(function(){
+      if (!stopped) {
+        show_app(app+1)
+        change_app()
+      }
+    },7000)
+  }
+
+  change_app()
+
+  function show_app(a) {
+    if (a != app && !changing) {
+      changing = true
+      var old = d3.select("#app_"+app).style("opacity",0)
+      d3.select("#page_"+app).node().toggleClass("active")
+      d3.select("#page_"+app).node().style.backgroundColor = "#333"
+      d3.select("#page_"+app).node().style.borderColor = "#333"
+      setTimeout(function(){
+        old.style("display","none")
+        changing = false
+      },1000)
+      if (a > carousel.length) app = 1
+      else app = a
+      d3.select("#app_"+app).style("display","block")
+      setTimeout(function(){
+        d3.select("#app_"+app).style("opacity",1)
+      },5)
+      d3.select("#page_"+app).node().toggleClass("active")
+      d3.select("#page_"+app).node().style.backgroundColor = carousel[app-1].color
+      d3.select("#page_"+app).node().style.borderColor = carousel[app-1].color
+      d3.select("#carousel .decision").node().style.backgroundColor = carousel[app-1].color
+      d3.select(".darkbox").node().style.color = carousel[app-1].color
+    }
+  }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+@import "partials/sizes";
+
+@mixin icon {
+  background-position: 40%;
+  background-repeat: no-repeat;
+  background-size: auto 80%;
+  content: "";
+  display: block;
+  font-family: FontAwesome;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: $normal;
+  position: absolute;
+  text-align: center;
+  text-decoration: inherit;
+}
+
+// @source - [@Stephn-R](https://github.com/sass/sass/issues/1395#issuecomment-57483844)
+// @description converts 1 or more characters into a unicode
+// @markup {scss}
+// unicode("e655"); // "\e655"
+@function unicode($str) {
+  @return unquote("\"")+unquote(str-insert($str, "\\", 1))+unquote("\"");
+}

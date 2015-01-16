@@ -1,0 +1,114 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/sizes";
+@import "partials/vendor";
+
+$slideTiming: 0.75s;
+
+.list {
+  display: block;
+  padding: 0;
+
+  & > div {
+    margin: 0 $gutter;
+  }
+
+  .prev, .next {
+    @include icon;
+    @include transition(opacity $slideTiming, color 0.1s);
+    color: $grey;
+    font-size: 50px;
+    line-height: 215px;
+    opacity: 1;
+    width: $gutter;
+    &:hover {
+      color: $red;
+    }
+    &.disabled {
+      cursor: auto;
+      opacity: 0;
+    }
+  }
+
+  .prev {
+    left: 0;
+    &:before {
+      content: unicode("f104");
+    }
+  }
+
+  .next {
+    right: 0;
+    &:before {
+      content: unicode("f105");
+    }
+  }
+
+  .scroller {
+
+    overflow: hidden;
+    position: relative;
+
+    .page {
+      @include transition($slideTiming ease-in-out);
+      list-style-type: none;
+      white-space: nowrap;
+
+      li{
+        display: inline-block;
+      }
+    }
+
+  }
+
+}
+
+.poster {
+  @include linkShadow(0.75);
+  @include transition(background-position 0.1s);
+  background-color: $lightgrey;
+  background-position: center top;
+  background-size: auto 110%;
+  box-siizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  height: 200px;
+  margin: 5px;
+  overflow: hidden;
+  position: relative;
+  width: 150px;
+
+  .title {
+    @include box();
+    bottom: 0;
+    color: $black;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    padding: 6px 8px 8px;
+    position: absolute;
+    width: 100%;
+    white-space: normal;
+    z-index: 20;
+
+  }
+
+  .icon {
+    bottom: 10px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    img {
+      width: 100%;
+    }
+  }
+
+  &:hover {
+    background-position: center bottom;
+    .background > img {
+      height: 120%;
+    }
+  }
+
+}

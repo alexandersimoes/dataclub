@@ -1,0 +1,66 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link type="text/css" rel="stylesheet" media="all" href="/static/css/netflix.css" />
+
+{% endblock %}
+
+{% import "templates/includes/banner.html" as banner %}
+
+{% block body %}
+
+  <div id="featured">
+    {%- for profile in featured -%}
+      <a href="{{ profile.url() }}" class="featured_link">
+        {{ banner.create(profile) }}
+      </a>
+    {%- endfor -%}
+    <div class="pagination">
+    {% for profile in featured %}
+      <div id="featured_{{ loop.index0 }}" class="page_indicator{% if loop.first %} active{% endif %}" alt="{{ profile.title() }}"></div>
+    {% endfor %}
+    </div>
+  </div>
+  <div id="caros">
+  {% for list in lists %}
+
+    <section class="list">
+      <div><h2>{{ list.title }}</h2></div>
+      <a class="prev disabled"></a>
+      <a class="next"></a>
+      <div class="scroller">
+        {% if list.pages|length > 5 %}
+        {% endif %}
+        {% set max = 5 %}
+        <ul data-parameters="{{ list.parameters }}" class="page">
+
+          {% for page in list.pages -%}
+
+              {%- set palette = page.palette() -%}
+              {%- set primary = palette[0] -%}
+              {%- set secondary = palette[1] -%}
+
+              {% set index = loop.index % max -%}
+              {% set icon = page.icon() -%}
+              <li>
+                <a class="poster" href="{{ page.url() }}" style="background-image: url('{{ page.image().url }}')">
+                  <h4 class="title" style="background-color: {{ primary }}; color: {{ secondary }};">
+                    {{ page.title() }}
+                  </h4>
+                </a>
+              </li>
+          {%- endfor %}
+        </ul>
+      </div>
+    </section>
+  {% endfor %}
+  </div>
+
+{% endblock %}
+
+{% block js %}
+
+  <script src="/static/js/home.js"></script>
+
+{% endblock %}

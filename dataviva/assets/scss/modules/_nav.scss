@@ -1,0 +1,452 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/media";
+@import "partials/sizes";
+@import "partials/vendor";
+
+#logo {
+  background-image: url("/static/img/nav/DataViva.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: bottom left;
+  height: 45px;
+  margin: 10px 0;
+  width: 150px;
+}
+
+header {
+  @include flexDisplay;
+  @include flexAlign(center);
+  @include justify(space-between);
+  background-color: $white;
+  height: 65px;
+  margin: 0 $gutter;
+  z-index: 100;
+
+  #links {
+
+    @include flexDisplay;
+    @include flexAlign(center);
+    margin: 10px 0;
+
+    & > * {
+      margin: 0 15px;
+    }
+
+    .link {
+      display: inline-block;
+      font-family: $oswald;
+      font-size: 14px;
+      font-weight: $normal;
+
+      &:hover {
+        color: $red;
+      }
+
+    }
+
+    #search {
+      margin-right: 0;
+      position: relative;
+      width: 180px;
+
+      i {
+        color: $grey;
+        left: 6px;
+        position: absolute;
+        top: 8px;
+        z-index: 50;
+      }
+
+      input {
+        display: inline-block;
+        padding-left: 20px;
+      }
+
+      .twitter-typeahead, .tt-hint {
+        width: 100%;
+      }
+
+      .tt-dropdown-menu {
+        @include box();
+        background-color: white;
+        border: 1px solid $grey;
+        overflow-y: scroll;
+        margin-top: -1px;
+        text-align: left;
+        width: 100%;
+
+        // color: $black;
+        // max-height: 400px;
+        // padding: 0;
+
+        .tt-suggestion {
+          cursor: pointer;
+          font-family: $oswald;
+          font-size: 14px;
+          font-weight: $light;
+          line-height: 16px;
+          margin: 0;
+          padding: 4px 6px;
+
+          &.tt-cursor {
+            background-color: $lightgrey;
+          }
+
+          .title, .sub {
+            display: block;
+          }
+
+          .title {
+            margin-bottom: 2px;
+            .icon {
+              display: inline-block;
+              height: 16px;
+              margin-right: 6px;
+              margin-top: -1px;
+              width: 16px;
+              img {
+                width: 100%;
+              }
+            }
+            .tt-highlight {
+              font-weight: $normal;
+              line-height: 13px;
+            }
+          }
+
+          .sub {
+            font-size: 12px;
+
+            .tt-highlight {
+              font-weight: $normal;
+              line-height: 14px;
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+header.sidebar {
+  @include box();
+  background-color: $grey;
+  display: block;
+  height: 100vh;
+  left: 0;
+  margin: 0;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  width: $sideMenuWidth;
+
+  #logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  #links {
+    display: block;
+    text-align: center;
+    margin: 0 25px;
+    .link {
+      margin: 0 10px;
+    }
+    #search {
+      display: block;
+      margin: 20px 0 10px;
+      width: 100%;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    li {
+      font-family: $oswald;
+      padding: 1px 25px 3px;
+
+      &.depth_0 {
+        font-size: 24px;
+        font-weight: $normal;
+        margin: 14px 0 -4px;
+      }
+
+      &.depth_1 {
+        font-size: 18px;
+        font-weight: $normal;
+        margin: 14px 0 3px;
+      }
+
+      &.depth_2 {
+        font-size: 14px;
+        font-weight: $normal;
+        margin: 5px 0;
+      }
+
+      &.depth_3 {
+        font-size: 13px;
+        font-weight: $light;
+        margin: 2px 0;
+        padding-left: 37px;
+      }
+
+    }
+
+  }
+
+}
+
+// a.account {
+//   display: block;
+//   margin-top: 6px;
+//   padding: 0px 3px;
+//   text-align: left;
+//   &:first-child {
+//     margin-top: 3px;
+//   }
+//   &:hover {
+//     color: $red;
+//   }
+//   & > i {
+//     display: inline-block;
+//     width: 16px;
+//   }
+// }
+//
+//
+// #hamburger {
+//   display: none;
+// }
+//
+// #header, #sideMenu {
+//
+//   & > .link:hover, & > .link.active {
+//     color: $red;
+//   }
+//
+//   & > .link, #nav_controls {
+//     color: $grey;
+//     display: inline-block;
+//     font-size: $small;
+//     text-align: center;
+//     width: 120px;
+//
+//     .icon {
+//       font-family: FontAwesome;
+//       font-size: 22px;
+//       -webkit-font-smoothing: antialiased;
+//       font-style: normal;
+//       font-weight: $normal;
+//       margin: 0 auto 5px;
+//       text-align: center;
+//     }
+//
+//     #language div {
+//       @include box(content-box !important);
+//     }
+//
+//   }
+//
+// }
+//
+// #header {
+//
+//   margin: 0;
+//   text-align: center;
+//
+//   .link, #nav_controls {
+//     height: 40px;
+//     margin: 20px 0;
+//   }
+//
+//   #nav_controls {
+//     display: inline-block;
+//     margin: 10px 7px;
+//     text-align: center;
+//     width: 100px;
+//
+//     #account {
+//       margin-top: 5px;
+//       & > i {
+//         line-height: 14px;
+//         margin-right: 3px;
+//       }
+//       &.active, &:hover {
+//         color: $red;
+//         cursor: pointer;
+//       }
+//     }
+//
+//   }
+//
+// }
+
+// .subnav {
+//   background-color: $lightgrey;
+//   font-size: $small;
+//   padding: 5px;
+//   position: relative;
+//   text-align: center;
+//   .link {
+//     color: $grey;
+//     margin: 0 $gutter/4;
+//     padding: 5px 9px;
+//     &:hover {
+//       color: $black;
+//     }
+//     &.active {
+//       background-color: $red;
+//       color: white;
+//     }
+//
+//   }
+//   .triangle {
+//     border-color: transparent transparent $lightgrey transparent;
+//     border-style: solid;
+//     border-width: $gutter * 0.2;
+//     height: 0;
+//     margin-left: -$gutter * 0.2;
+//     position: absolute;
+//     top: -$gutter * 0.4;
+//     width: 0;
+//   }
+// }
+
+// #sideMenu {
+//
+//   @include transition(left 0.4s);
+//   background-color: $lightgrey;
+//   bottom: 0;
+//   left: -$sideMenuWidth;
+//   margin-top: 35px;
+//   overflow: scroll;
+//   padding-bottom: 15px;
+//   position: fixed;
+//   top: 0px;
+//   width: $sideMenuWidth;
+//
+//   &.open {
+//     left: 0px;
+//   }
+//
+//   & > .link {
+//     color: $black;
+//     display: block;
+//     margin: 15px 10px 0;
+//     text-align: left;
+//     width: auto;
+//
+//     .icon {
+//       @include transform-origin(50% 100%);
+//       display: inline-block;
+//       font-size: 17px;
+//       margin: 0;
+//       width: 25px;
+//     }
+//
+//   }
+//
+//   & > .subnav {
+//     padding: 5px 0 0 5px;
+//     .link {
+//       display: block;
+//       font-size: $small;
+//       margin: 0 0 0 25px;
+//       text-align: left;
+//       width: auto;
+//     }
+//   }
+//
+// }
+
+// @include mobile($width) {
+//   header {
+//     background-color: $black;
+//
+//     #hamburger {
+//       cursor: pointer;
+//       display: block;
+//       height: 35px;
+//       left: 0px;
+//       position: absolute;
+//       text-align: center;
+//       top: 0px;
+//       width: 35px;
+//       .burgerLine {
+//         backface-visibility: hidden;
+//         position: absolute;
+//         left: 9px;
+//         border-top: 1px solid $grey;
+//         width: 16px;
+//         transition: 0.4s;
+//         &.top {
+//           top: 11px;
+//           &.clicked {
+//             top: 16px;
+//             @include transform(rotate(45deg));
+//           }
+//         }
+//         &.middle {
+//           top: 16px;
+//           &.clicked {
+//             opacity: 0;
+//           }
+//         }
+//         &.bottom {
+//           top: 21px;
+//           &.clicked {
+//             top: 16px;
+//             @include transform(rotate(-45deg));
+//           }
+//         }
+//       }
+//     }
+//
+//     #header {
+//       margin: 0;
+//       #logo {
+//         background-image: url("/static/img/nav/DataVivaWhite.png");
+//         background-position: bottom center;
+//         height: 35px;
+//         margin: 0;
+//       }
+//       .link {
+//         display: none;
+//       }
+//       #nav_controls {
+//         display: none;
+//       }
+//     }
+//
+//     .subnav {
+//       display: none;
+//     }
+//
+//   }
+// }
+
+// $pageIcons: (
+//   visualize: "f200",
+//   data: "f1c0",
+//   rankings: "f201",
+//   about: "f02d",
+//   search: "f002"
+// );
+//
+// @each $page, $icon in $pageIcons {
+//
+//   #header, #sideMenu {
+//
+//     ##{$page} .icon:before {
+//       content: unicode($icon);
+//     }
+//
+//   }
+//
+// }

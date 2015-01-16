@@ -1,0 +1,211 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/vendor";
+
+/***********************/
+/* Default Anchor Tags */
+/***********************/
+a {
+  text-decoration: none;
+  color: $black;
+}
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: $grey;
+}
+
+/*****************************/
+/* Standard Decision Buttons */
+/*****************************/
+.decision {
+  color: #666666;
+  display: block;
+  font-size: $medium;
+  line-height: $medium * 1.2;
+  margin: 0 0 $gutter/4;
+  opacity: 0.75;
+  overflow: hidden;
+  padding: $medium * 0.5 0;
+  position: relative;
+  text-align: left;
+  text-overflow: ellipsis;
+
+  &.active {
+    color: $red;
+    opacity: 1;
+  }
+
+  &.button {
+    @include linkShadow();
+    background-color: $red;
+    color: white;
+    padding: $medium * 0.5 $medium * 0.6;
+  }
+
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+
+  &.arrow {
+    padding-right: 24px;
+
+    &:after {
+      @include transition(transform 0.1s, margin-top 0.1s);
+      @include icon;
+      content: unicode("f105");
+      font-size: 20px;
+      line-height: 0px;
+      margin-top: -1px;
+      top: 50%;
+      right: 0;
+      width: 24px;
+    }
+  }
+
+  &.small {
+    font-size: $small;
+    line-height: $small * 1.2;
+    margin: $gutter/8;
+    padding: $small * 0.5 $small * 0.6;
+  }
+
+  &.inline {
+    display: inline-block;
+    margin: 0 $medium;
+  }
+
+}
+
+/*****************************/
+/* Decision Buttons w/ Icons */
+/*****************************/
+@mixin iconSize($size: $medium, $mod: 1) {
+  font-size: $size;
+  height: $size * 2;
+  line-height: $size * 2 + $mod;
+  margin-top: -($size+$mod);
+}
+
+.decision.icon {
+
+  padding-left: $medium * 2;
+
+  &:before {
+    @include icon;
+    @include iconSize($medium, 1);
+    color: black;
+    left: 0;
+    opacity: 0.5;
+    top: 50%;
+    width: 26px;
+  }
+
+  &.active:before {
+    color: $red;
+    opacity: 1;
+  }
+
+  &.button {
+    opacity: 1;
+    &:hover {
+      @include shadow(0 1px 5px rgba(0,0,0,0.5));
+    }
+    &:before {
+      color: white;
+      opacity: 1;
+      width: 32px;
+    }
+  }
+
+  &.small {
+    padding-left: $small * 2;
+    &:before {
+      @include iconSize($small, -1);
+      width: $small * 2;
+    }
+  }
+
+}
+
+$beforeIcons: (
+  approved: "f00c",
+  attract: "f0c0",
+  bra: "f124",
+  comtrade: "f0ac",
+  cbo: "f007",
+  cnae: "f1ad",
+  csv: "f1c3",
+  database: "f022",
+  destinations: "f0ac",
+  diversification: "f074",
+  duplicate: "f086",
+  growth: "f062",
+  hs: "f0d1",
+  industry: "f085",
+  isic: "f1ad",
+  ncm: "f0d1",
+  no: "f128",
+  opportunity: "f140",
+  paths: "f0c0",
+  pdf: "f1c1",
+  png: "f1c5",
+  pending: "f06a",
+  questions: "f075",
+  rejected: "f00d",
+  shrink: "f063",
+  source: "f14e",
+  svg: "f1c9",
+  rais: "f0c0",
+  replies: "f112",
+  reply: "f112",
+  secex: "f0d1",
+  wages: "f0d6",
+  wld: "f072",
+  workforce: "f0c0",
+  yes: "f00c"
+);
+
+@each $type, $code in $beforeIcons {
+  .decision.icon.#{$type}:before {
+    content: unicode($code);
+  }
+}
+
+$appColors: (
+  bar: $lightpurple,
+  box: $lightbrown,
+  compare: $cyan,
+  geo_map: $green,
+  line: $lightgreen,
+  network: $red,
+  occugrid: $orange,
+  pie: $darkred,
+  rings: $pink,
+  scatter: $blue,
+  stacked: $purple,
+  tree_map: $yellow,
+);
+
+@each $app, $color in $appColors {
+  .decision.#{$app} {
+    &.active {
+      color: $color !important;
+    }
+
+    &.button {
+      background-color: $color !important;
+    }
+  }
+  .decision.icon.#{$app}:before {
+    background-image: url("/static/img/icons/app/#{$app}_black.png");
+  }
+  .decision.icon.active.#{$app}:before {
+    background-image: url("/static/img/icons/app/#{$app}_color.png");
+  }
+  .decision.icon.button.#{$app}:before {
+    background-image: url("/static/img/icons/app/#{$app}_white.png");
+  }
+}

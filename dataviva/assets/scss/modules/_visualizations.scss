@@ -1,0 +1,46 @@
+@import "partials/colors";
+@import "partials/sizes";
+@import "partials/vendor";
+
+$iconSize: 20px;
+$iconPadding: 5px;
+
+.visualization_title {
+  @include box();
+  left: 50%;
+  margin-left: -$textWidth/2;
+  max-width: $textWidth;
+  padding-bottom: $gutter/4;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+}
+
+.visualization_ui {
+  margin-left: $iconPadding;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+
+  a {
+    display: inline-block;
+    margin: $iconPadding $iconPadding $iconPadding 0;
+  }
+
+  i {
+    color: $grey;
+    height: $iconSize;
+    font-size: $medium;
+    line-height: 20px;
+    text-align: center;
+    width: $iconSize;
+
+    &:hover {
+      color: $red;
+      cursor: pointer;
+    }
+
+  }
+
+}

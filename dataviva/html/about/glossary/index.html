@@ -1,0 +1,51 @@
+{% extends "templates/site.html" %}
+
+{% block title %}: {% trans %}Glossary{% endtrans %}{% endblock %}
+
+{% block body %}
+
+  <section>
+
+    <div class="flex1">
+
+      <a class="decision{% if term == 'complexity' %} active{% endif %}" href="{{ url_for('about.glossary', term='complexity')}}">
+        {% trans %}Complexity{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'distance' %} active{% endif %}" href="{{ url_for('about.glossary', term='distance')}}">
+        {% trans %}Distance{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'diversity' %} active{% endif %}" href="{{ url_for('about.glossary', term='diversity')}}">
+        {% trans %}Diversity{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'importance' %} active{% endif %}" href="{{ url_for('about.glossary', term='importance')}}">
+        {% trans %}Importance{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'opp_gain' %} active{% endif %}" href="{{ url_for('about.glossary', term='opp_gain')}}">
+        {% trans %}Opportunity Gain{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'proximity' %} active{% endif %}" href="{{ url_for('about.glossary', term='proximity')}}">
+        {% trans %}Proximity{% endtrans %}
+      </a>
+
+      <a class="decision{% if term == 'rca' %} active{% endif %}" href="{{ url_for('about.glossary', term='rca')}}">
+        {% trans %}Comparative Advantage{% endtrans %} (RCA)
+      </a>
+
+      <a class="decision{% if term == 'required' %} active{% endif %}" href="{{ url_for('about.glossary', term='required')}}">
+        {% trans %}Estimated Employment{% endtrans %}
+      </a>
+
+    </div>
+
+    <div class="flex3">
+      {% include "about/glossary/"+term+".html" %}
+    </div>
+
+  </section>
+
+{% endblock %}

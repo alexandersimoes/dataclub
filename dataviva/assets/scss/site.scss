@@ -1,0 +1,43 @@
+@import "modules/reset";
+
+@import "partials/colors";
+@import "partials/sizes";
+@import "partials/vendor";
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @include flexDisplay;
+  @include flexDirection(column);
+  @include transition(padding-left 0.4s);
+  background-color: $white;
+  color: $black;
+  font-family: $merriweather;
+  font-size: $small;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: $normal;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  width: 100%;
+  &.offset {
+    padding-left: $sideMenuWidth;
+  }
+}
+
+@import "modules/titles";
+@import "modules/buttons";
+@import "modules/forms";
+@import "modules/layout";
+@import "modules/nav";
+@import "modules/footer";
+@import "modules/columns";
+
+@import "modules/about";
+@import "modules/home";
+@import "modules/visualizations";

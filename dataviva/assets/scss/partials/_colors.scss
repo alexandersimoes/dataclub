@@ -1,0 +1,25 @@
+@import "partials/vendor";
+
+$black: #444444;
+$blue: #0b1097;
+$cyan: #1abbee;
+$darkred: #800000;
+$green: #3daf49;
+$grey: #aaaaaa;
+$lightbrown: #b7834b;
+$lightgreen: #a4bd99;
+$lightgrey: #eeeeee;
+$lightpurple: #93789e;
+$orange: #e87600;
+$pink: #d67ab0;
+$purple: #742777;
+$red: #af1f24;
+$white: #fafafa;
+$yellow: #ffc41c;
+
+@mixin linkShadow($opacity: 0.25) {
+  @include shadow(0 1px 3px rgba(0,0,0,$opacity * .66));
+  &:hover {
+    @include shadow(0 1px 5px rgba(0,0,0,$opacity));
+  }
+}

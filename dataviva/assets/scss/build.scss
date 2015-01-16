@@ -1,0 +1,22 @@
+@import "partials/colors";
+@import "partials/sizes";
+
+#viz {
+  height: 600px;
+  margin-bottom: $gutter;
+}
+
+.paralax {
+  sub {
+    bottom: 6px;
+    position: absolute;
+    opacity: 0.9;
+    right: 10px;
+    a {
+      color: $lightgrey;
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+}

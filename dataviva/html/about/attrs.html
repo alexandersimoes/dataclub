@@ -1,0 +1,135 @@
+{% extends "templates/site.html" %}
+
+{% block title %}: {% trans %}Classifications{% endtrans %}{% endblock %}
+
+{% block body %}
+
+  <section>
+
+    <div>
+
+      <a class="decision {% if attr == 'bra' %}active{% endif %} icon bra" href="{{ url_for('about.attrs', attr='bra', depth='2')}}">
+        {% trans %}Brazilian Locations{% endtrans %}
+      </a>
+
+      <a class="decision {% if attr == 'isic' %}active{% endif %} icon isic" href="{{ url_for('about.attrs', attr='isic', depth='1')}}">
+        {% trans %}Industries{% endtrans %}
+      </a>
+
+      <a class="decision {% if attr == 'cbo' %}active{% endif %} icon cbo" href="{{ url_for('about.attrs', attr='cbo', depth='1')}}">
+        {% trans %}Occupations{% endtrans %}
+      </a>
+
+      <a class="decision {% if attr == 'hs' %}active{% endif %} icon hs" href="{{ url_for('about.attrs', attr='hs', depth='2')}}">
+        {% trans %}Products{% endtrans %}
+      </a>
+
+      <a class="decision {% if attr == 'wld' %}active{% endif %} icon wld" href="{{ url_for('about.attrs', attr='wld', depth='2')}}">
+        {% trans %}Export Destinations{% endtrans %}
+      </a>
+
+    </div>
+
+    <div class="flex3">
+      <div id="depths">
+        {% for d in depths %}
+          <input type="radio" id="{{attr}}_{{d.depth}}" name="depth" value="{{attr}}_{{d.depth}}"{% if depth == d.depth %} checked{% endif %}>
+          <label for="{{attr}}_{{d.depth}}">{{ d.title }}</label>
+        {% endfor %}
+
+        <a class="decision icon csv small inline" onclick="download_classfication()">Download as CSV</a>
+
+      </div>
+      <div id="iframe">
+        <iframe class="attrs" src="{{data_url}}" height="500px" width="566px"></iframe>
+      </div>
+    </div>
+
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+  <script>
+
+    var toggle = d3plus.form()
+      .data("[name=depth]")
+      .focus(undefined, change_depth)
+      .order({"sort": "desc"})
+      .ui({"padding": 5.9375})
+      .draw()
+
+    console.log(toggle.ui())
+
+    var depth = "{{depth}}", attr = "{{attr}}"
+
+    function downloadDone() {
+      dataviva.popover.hide("#popover")
+      window.clearInterval( downloadTimer );
+      expireCookie( "downloadToken" );
+    }
+
+	function getCookie( name ) {
+	  var parts = document.cookie.split(name + "=");
+	  if (parts.length == 2) return parts.pop().split(";").shift();
+	}
+
+    function expireCookie( cName ) {
+      document.cookie =
+      encodeURIComponent( cName ) +
+      "=deleted; expires=" +
+      new Date( 0 ).toUTCString();
+    }
+
+    function download_classfication() {
+    	depthSelected = d3.selectAll(":checked");
+    	depthElem = d3.select(depthSelected[0][1]);
+    	depth = depthElem[0][0].value;
+    	id = depthElem[0][0].id.split("_");
+    	title = "["+dataviva.format.text("classifications")+"] "+dataviva.format.text(id[0])+" - "+dataviva.format.text(depthElem[0][0].id+"_plural",depthElem[0][0].id+"_plural",dataviva.language)
+
+    	url = "http://dataviva.info/attrs/"+id[0]+"/?depth="+depth;
+    	 d3.xhr("/apps/download/")
+		  .header("Content-Type", "application/x-www-form-urlencoded")
+	        .post("output_format=url2csv&title="+title+"&downloadToken="+ new Date().getTime() +"&data="+ url, function(e, data){
+			    top.location.href = data.response;
+			    downloadDone();
+			});
+    }
+
+    function update_table() {
+      d3.select("iframe").attr("src","/attrs/table/"+attr+"/"+depth+"/")
+      dataviva.url("/about/classification/"+attr+"/"+depth+"/")
+    }
+
+    function change_depth(d) {
+      depth = d.split("_")[1]
+      update_table()
+    }
+
+    function iframe_size(w,h) {
+      var container_height = d3.select("#outer_container").node().offsetHeight
+      d3.select("#about_content .lightbox")
+        .style("height",function(){
+          var allowed =  container_height - 179
+          return h < allowed ? h+"px" : allowed+"px"
+        })
+      d3.select("#about_content #iframe")
+        .style("height",function(){
+          var allowed =  container_height - 179 - 19
+          return h < allowed ? h+"px" : allowed+"px"
+        })
+      d3.select("#about_content iframe")
+        .attr("height",function(){
+          var allowed =  container_height - 179 - 19
+          return h < allowed ? h+"px" : allowed+"px"
+        })
+    }
+
+    update_table()
+    iframe_size(0,100)
+
+  </script>
+
+{% endblock %}

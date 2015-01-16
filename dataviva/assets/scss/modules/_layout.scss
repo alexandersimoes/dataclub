@@ -1,0 +1,286 @@
+@import "partials/colors";
+@import "partials/icons";
+@import "partials/media";
+@import "partials/sizes";
+@import "partials/vendor";
+
+main {
+  @include flexSize(1);
+  margin: 0;
+  // width: 100%;
+}
+
+section {
+  @include flexDisplay;
+  @include flexDirection(row);
+  margin: $gutter/2 auto $gutter*2;
+  padding: 0 $gutter;
+  position: relative;
+  text-align: left;
+  // & > div, & > h1, & > h2, & > h3, & > h4 {
+  //   @include flexSize(1);
+  //   @include box();
+  //   padding-left: $gutter;
+  //   // margin: 0 0 0 $gutter;
+  // }
+  & > section {
+    @include flexSize(1);
+    margin: 0 auto;
+    padding: 0 $gutter 0 $gutter;
+  }
+}
+
+.paralax {
+  @include box();
+  background-image: url("/static/img/bgs/triangles_grey.png");
+  background-position: top center;
+  display: block;
+  margin: 0;
+  padding: 10px 0;
+  position: relative;
+  text-align: center;
+  width: 100%;
+
+  h1 {
+    margin: 5px;
+  }
+
+  &.image {
+    padding: 20px 0;
+    text-shadow: 0 0 10px black;
+
+    .background {
+      overflow: hidden;
+    }
+
+    h1 {
+      margin: 20px;
+    }
+
+    h1, h4 {
+      color: $white;
+    }
+
+  }
+  & > section {
+    padding-right: 0;
+  }
+  * {
+    position: relative;
+    z-index: 20;
+  }
+}
+
+.background {
+  background-position: top center;
+  background-size: 100%;
+  left: 0;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  img {
+    @include blur(5);
+    left: 0;
+    margin-left: -10px;
+    margin-top: -10px;
+    position: absolute;
+    top: 0%;
+    width: 105%;
+    z-index: 1;
+  }
+
+  &:before {
+    background: hsla(0,0%,0%,0.3);
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+}
+
+div.headlines {
+  padding: 0 0 10px;
+  position: relative;
+  z-index: 50;
+
+  .labels, .bubbles, .units {
+    @include flexDisplay;
+    @include flexDirection(row);
+    & > * {
+      margin: 0;
+      width: 150px;
+    }
+    h4, h5 {
+      color: $white;
+      text-shadow: 0 0 10px black;
+    }
+  }
+
+  .labels, .units {
+    @include flexAlign(center);
+    height: 42px;
+  }
+
+  .statLink:hover {
+    div, h4, h5 {
+      text-decoration: underline;
+    }
+  }
+
+  .stat {
+    @include flexDisplay;
+    @include flexAlign(center);
+    @include rounded(40px);
+    background-color: $black;
+    color: $white;
+    font-family: $oswald;
+    font-size: 14px;
+    height: 80px;
+    margin: 5px auto;
+    padding: 5px;
+    text-align: center;
+    text-shadow: none;
+    width: 80px;
+
+    &.large {
+      font-size: 24px;
+    }
+
+    & > div {
+      @include flexSize(1);
+      display: inline-block;
+    }
+  }
+
+}
+
+main.sidebar {
+  margin-left: $sideMenuWidth;
+
+  .headlines {
+    margin-bottom: -114px;
+    .units h4, .units h5 {
+        color: $black;
+        text-shadow: none;
+    }
+  }
+}
+
+@include mobile() {
+  section {
+    @include flexDirection(column);
+  }
+}
+
+/*****************/
+/* Flash Message */
+/*****************/
+#server_message {
+  background-color: #af1f24;
+  bottom: -24px;
+  color: white;
+  position: absolute;
+  padding: 5px 0px;
+  text-align: center;
+  width: 100%;
+  z-index: 200;
+}
+
+/*****************/
+/* Accordion Box */
+/*****************/
+.accordion {
+  .hidden {
+    background-color: white;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: transparent transparent transparent $grey;
+    display: none;
+    margin-bottom: $gutter/4;
+    padding: $gutter/2 $gutter/2 0 $gutter/2;
+  }
+  .decision {
+    padding-right: 24px;
+    &:after {
+      @include transition(transform 0.1s, margin-top 0.1s);
+      @include icon;
+      content: unicode("f105");
+      font-size: 20px;
+      line-height: 0px;
+      margin-top: -1px;
+      top: 50%;
+      right: 0;
+      width: 24px;
+    }
+  }
+  &.active {
+    .decision {
+      @include shadow(none);
+      &:hover {
+        @include shadow(none);
+      }
+      margin-bottom: 0;
+      &:after {
+        @include transform(rotate(90deg));
+        @include transform-origin(50%);
+        margin-top: 1px;
+      }
+    }
+    .hidden {
+      display: block;
+    }
+  }
+}
+
+/************/
+/* Lightbox */
+/************/
+.lightbox {
+  @include shadow(0px 1px 5px rgba(0,0,0,0.5));
+  background-color: white;
+  position: fixed;
+  z-index: 500;
+}
+
+.shield {
+  background-color: white;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  opacity: 0.5;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 499;
+}
+
+/***********/
+/* Loading */
+/***********/
+.loading {
+  color: $red;
+  padding: 20px 0;
+  position: relative;
+  text-align: center;
+  i {
+    display: block;
+    font-size: $xxlarge;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: 4px;
+    opacity: 0.25;
+    position: absolute;
+    top: 23px;
+    width: 100px;
+    z-index: 1;
+  }
+  width: 100%;
+  z-index: 10;
+}

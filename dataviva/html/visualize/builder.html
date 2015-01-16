@@ -1,0 +1,59 @@
+{% extends "templates/site.html" %}
+
+{% block head %}
+
+  <link rel="stylesheet" type="text/css" href="/static/css/search.css">
+  <script src="/static/js/visualization.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+  <section class="builder">
+    <div class="viz"></div>
+    <a class="back">{{ trans }}Change Visualization{{ endtrans }}</a>
+    <div class="search{% if build %} hidden{% endif %}">
+      <div id="searchBox"></div>
+      <div id="results"></div>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block js %}
+
+  {% import "templates/includes/search.html" as search %}
+  {{ search.start(profiles=False, callback='createBuild', build=buildJS) }}
+
+  <script>
+
+    var currentBuild = false;
+
+    // Creates the visualization given a build object.
+    dataviva.createBuild = function(build) {
+
+      d3.select(".search").classed("hidden", true);
+      build.container = d3.select(".viz");
+
+      var sameType = currentBuild.app_type === build.app_type;
+      var sameTitle = currentBuild.title === build.title;
+
+      if (!currentBuild || (!sameType || !sameTitle)) {
+        currentBuild = build;
+        dataviva.url(build);
+        visualization(build);
+      }
+    }
+
+    // If the template already has a build, this creates the visualiztion.
+    var jsonBuild = {{ buildJS|safe }};
+    if (jsonBuild) dataviva.createBuild(jsonBuild);
+
+    // Opens the search window when clicking on the back button.
+    d3.select(".back").on(d3plus.client.pointer.click, function(){
+      d3.select(".search").classed("hidden", false);
+    })
+
+  </script>
+
+{% endblock %}
