@@ -163,6 +163,7 @@ class WldProfile(Profile):
                     location=location.name(), country=wld.name(), top_prods=top_prods))
 
             if location.id == "sabra":
+                bra_filter = location
                 top_munics, top_munics_len = Stat(self, "secex", "export_val", "top", "bra_id").list(val_num_format="export_val", with_len=True, with_filter=True)
             else:
                 bra_filter = location
