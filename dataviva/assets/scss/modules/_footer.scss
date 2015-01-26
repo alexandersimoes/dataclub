@@ -1,6 +1,11 @@
+@import "partials/sizes";
+
 footer {
   margin: 20px auto;
   text-align: center;
+  &.sidebar {
+    padding-left: $sideMenuWidth;
+  }
 }
 
 a.opendata {
@@ -30,10 +35,10 @@ a.logo:hover {
   opacity: 1;
 }
 
-//$logos: "fjp", "fapemig", "governo", "mc", "datawheel";
-//
-//@each $logo in $logos {
-//  a.logo.#{$logo} {
-//    background-image: url("/static/img/nav/footer/logo_#{$logo}.jpg");
-//  }
-//}
+$logos: "github", "datawheel";
+
+@each $logo in $logos {
+  a.logo.#{$logo} {
+    background-image: url("/static/img/nav/footer/logo_#{$logo}.jpg");
+  }
+}

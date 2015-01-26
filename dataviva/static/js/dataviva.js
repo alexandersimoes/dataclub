@@ -31,6 +31,9 @@
         obj[header] = value;
         return obj;
       }, {});
+      if ("month" in dataObj) {
+        dataObj.month = new Date(dataObj.year + "/" + dataObj.month + "/01");
+      }
       if (!demo) {
         data_id = dataObj[id_key];
         d = depths.slice(0, depths.indexOf(data_id.length) + 1);

@@ -25,6 +25,9 @@ dataviva.cleanData = (data, attr, attr_key, group, url) ->
       obj
     , {})
 
+    if "month" of dataObj
+      dataObj.month = new Date dataObj.year + "/" + dataObj.month + "/01"
+
     unless demo
 
       data_id = dataObj[id_key]

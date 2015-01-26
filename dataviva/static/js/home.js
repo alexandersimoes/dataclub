@@ -153,14 +153,14 @@
     return page_el.style(prefix + "transform", "translateX(" + next_x + "px)");
   };
 
-  addCarousel = function() {
+  addCarousel = function(title, url) {
     var anext, aprev, div, divscroll, h2, main, section, ul;
     main = document.getElementById("caros");
     section = document.createElement("section");
     section.className = "list";
     div = document.createElement("div");
     h2 = document.createElement("h2");
-    h2.innerText = "Recently Viewed Profiles";
+    h2.innerText = title;
     div.appendChild(h2);
     aprev = document.createElement("a");
     aprev.className = "prev disabled";
@@ -172,7 +172,7 @@
     divscroll = document.createElement("div");
     divscroll.className = "scroller";
     ul = document.createElement("ul");
-    ul.setAttribute("data-parameters", "/stats/recent/pages?limit=10&sort=des");
+    ul.setAttribute("data-parameters", url);
     ul.className = "page";
     divscroll.appendChild(ul);
     section.appendChild(divscroll);
@@ -184,7 +184,9 @@
     });
   };
 
-  addCarousel();
+  addCarousel("Recently Viewed Profiles", "/stats/recent/pages?limit=10&sort=des");
+
+  addCarousel("Suggested Profiles", "/stats/suggested/pages?limit=10");
 
   d3.selectAll("a.next, a.prev").on(d3plus.client.pointer.click, onArrowClick);
 

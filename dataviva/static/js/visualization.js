@@ -160,8 +160,9 @@
   };
 
   config = function(build) {
-    var a, attr, attrs, bras, colorToggle, d, data, defaults, demoAttr, depthToggle, depths, gender, i, iconStyle, key, level, mod, nesting, network, ordering, output, params, size, sizeMethod, sizeToggle, textLabels, times, total, url, _i, _j, _k, _len, _len1, _len2, _ref;
+    var a, attr, attrs, bras, colorToggle, d, data, defaults, demoAttr, depthToggle, depths, gender, i, iconStyle, key, level, mod, nesting, network, ordering, output, params, size, sizeMethod, sizeToggle, textLabels, timeVar, times, total, url, _i, _j, _k, _len, _len1, _len2, _ref;
     params = {};
+    timeVar = ["secex", "ei"].indexOf(build.data_type) >= 0 ? "month" : "year";
     output = build.display_attr;
     depths = dataviva.depths[output].slice();
     if (depths.length > 2) {
@@ -231,7 +232,7 @@
         },
         timeline: false,
         type: "stacked",
-        x: "year",
+        x: timeVar,
         y: datasetDefault[build.data_type]
       };
     } else if (build.app_type === "line") {
@@ -242,7 +243,7 @@
         },
         timeline: false,
         type: "line",
-        x: "year",
+        x: timeVar,
         y: {
           scale: "linear",
           value: datasetDefault[build.data_type]
@@ -454,7 +455,7 @@
       id: nesting,
       size: datasetDefault[build.data_type],
       text: textLabels,
-      time: "year"
+      time: timeVar
     };
     defaults.focus = {
       tooltip: ["embed", "builder"].indexOf(page) >= 0 || build.container.classed("lightbox")
@@ -753,7 +754,7 @@
     }
     if (build.app_type === "line" || build.app_type === "bar") {
       defaults.ui.push({
-        label: dataviva.dict.y_scale,
+        label: dataviva.dict.scale,
         method: function(value, viz) {
           return viz.y({
             "scale": value
@@ -767,6 +768,21 @@
         label: dataviva.dict.y,
         method: "y",
         value: ["wage_avg", "num_emp"]
+      });
+    }
+    if (params.x && params.x === timeVar) {
+      defaults.ui.push({
+        label: "Resolution",
+        method: function(v, viz) {
+          return viz.time(v).x(v).draw();
+        },
+        value: [
+          {
+            "Monthly": "month"
+          }, {
+            "Yearly": "year"
+          }
+        ]
       });
     }
     params = configMerge(defaults, params);

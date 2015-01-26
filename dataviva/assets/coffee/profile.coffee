@@ -38,7 +38,8 @@ d3.select("header")
       else
         profileColor.link = profileColor.light
       d3.select(this).select("#logo")
-        .style "background-image", "url('/static/img/nav/DataVivaWhite.png')"
+        .style "color", "white"
+        # .style "background-image", "url('/static/img/nav/DataVivaWhite.png')"
     else
       if profileColor.dark is profileColor.background or
          profileColor.dark is profileColor.accent

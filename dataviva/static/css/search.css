@@ -134,11 +134,11 @@
   .list .prev {
     left: 0; }
     .list .prev:before {
-      content: unquote("\"")+unquote(str-insert("f104", "\\", 1))+unquote("\""); }
+      content: "\f104"; }
   .list .next {
     right: 0; }
     .list .next:before {
-      content: unquote("\"")+unquote(str-insert("f105", "\\", 1))+unquote("\""); }
+      content: "\f105"; }
   .list .scroller {
     overflow: hidden;
     position: relative; }
@@ -171,36 +171,36 @@
   overflow: hidden;
   position: relative;
   width: 150px; }
-  .poster .title {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    bottom: 0;
-    color: #444444;
-    display: block;
-    margin: 0;
-    overflow: hidden;
-    padding: 6px 8px 8px;
-    position: absolute;
-    width: 100%;
-    white-space: normal;
-    z-index: 20; }
-    .poster .icon {
-      bottom: 10px;
-      height: 30px;
+  .poster:hover {
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75); }
+    .poster .title {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      bottom: 0;
+      color: #444444;
+      display: block;
+      margin: 0;
+      overflow: hidden;
+      padding: 6px 8px 8px;
       position: absolute;
-      right: 10px;
-      width: 30px; }
-      .poster .icon img {
-        width: 100%; }
+      width: 100%;
+      white-space: normal;
+      z-index: 20; }
+      .poster .icon {
+        bottom: 10px;
+        height: 30px;
+        position: absolute;
+        right: 10px;
+        width: 30px; }
+        .poster .icon img {
+          width: 100%; }
   .poster:hover {
     background-position: center bottom; }
     .poster:hover .background > img {
       height: 120%; }
-.poster:hover {
-  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75); }
 #searchBox {
   font-size: 23.75px;
   line-height: 60px;
@@ -228,7 +228,7 @@
       text-align: center;
       text-decoration: inherit;
       color: #eeeeee;
-      content: unquote("\"")+unquote(str-insert("f00d", "\\", 1))+unquote("\"");
+      content: "\f00d";
       font-size: 26px;
       opacity: 1;
       width: 35px; }
@@ -294,7 +294,7 @@
             position: absolute;
             text-align: center;
             text-decoration: inherit;
-            content: unquote("\"")+unquote(str-insert("f00d", "\\", 1))+unquote("\""); }
+            content: "\f00d"; }
   #searchBox .tt-dropdown-menu {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -390,7 +390,7 @@
             position: absolute;
             text-align: center;
             text-decoration: inherit;
-            content: unquote("\"")+unquote(str-insert("f104", "\\", 1))+unquote("\"");
+            content: "\f104";
             left: 0;
             top: 7px;
             width: 20px; }
@@ -406,7 +406,7 @@
         background-color: #eeeeee; }
         .builder .search #removeBuild:before {
           color: #aaaaaa !important; }
-          .builder .search #removeBuild:before:hover {
+          .builder .search #removeBuild:hover:before {
             color: #444444 !important; }
     .builder .search #results {
       min-height: 400px;

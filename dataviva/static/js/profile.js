@@ -59,7 +59,7 @@
       } else {
         profileColor.link = profileColor.light;
       }
-      d3.select(this).select("#logo").style("background-image", "url('/static/img/nav/DataVivaWhite.png')");
+      d3.select(this).select("#logo").style("color", "white");
     } else {
       if (profileColor.dark === profileColor.background || profileColor.dark === profileColor.accent) {
         profileColor.link = text;

@@ -20780,6 +20780,8 @@ module.exports = function( vars ) {
     var periods = ["Milliseconds","Seconds","Minutes","Hours","Date","Month","FullYear"],
         conversions = [1000,60,60,24,30,12,1];
 
+    vars.data.time.periods = periods;
+
     var getDiff = function(start,end,i) {
 
       if (!vars.data.time.stepDivider) {
@@ -33517,11 +33519,12 @@ module.exports = function(vars,selection,enter,exit) {
   var stroke = vars.data.stroke.width * 2,
       hitarea = stroke < 15 ? 15 : stroke,
       discrete = vars[vars.axes.discrete],
-      ticks = [];
+      ticks = discrete.value === vars.time.value ?
+              vars.data.time.values : discrete.ticks.values;
 
-  discrete.ticks.values.forEach(function(d){
-    if (d.constructor === Date) ticks.push(d.getTime());
-    else ticks.push(d);
+  ticks = ticks.map(function(d){
+    if (d.constructor === Date) return d.getTime();
+    else return d;
   });
 
   selection.each(function(d){
@@ -33593,6 +33596,10 @@ module.exports = function(vars,selection,enter,exit) {
     //--------------------------------------------------------------------------
     if (vars.draw.timing) {
 
+      paths.exit().transition().duration(vars.draw.timing)
+        .attr("opacity", 0)
+        .remove();
+
       paths.transition().duration(vars.draw.timing)
         .attr("d",function(d){ return line(d.values); })
         .call(shapeStyle,vars);
@@ -33601,7 +33608,10 @@ module.exports = function(vars,selection,enter,exit) {
         .attr("class","d3plus_line")
         .style("stroke-linecap","round")
         .attr("d",function(d){ return line(d.values); })
-        .call(shapeStyle,vars);
+        .call(shapeStyle,vars)
+        .attr("opacity", 0)
+        .transition().duration(vars.draw.timing)
+          .attr("opacity", 1);
 
       rects.enter().append("rect")
         .attr("class","d3plus_anchor")
@@ -33621,6 +33631,9 @@ module.exports = function(vars,selection,enter,exit) {
 
     }
     else {
+
+      paths.exit().attr("opacity", 0)
+        .remove();
 
       paths.enter().append("path")
         .attr("class","d3plus_line")
@@ -39165,7 +39178,7 @@ print = require("../../../../../core/console/print.coffee");
 uniques = require("../../../../../util/uniques.coffee");
 
 module.exports = function(vars, opts) {
-  var axis, changed, d, domains, filtered, i, modified, oppAxis, range, reorder, t, ticks, zero, _i, _j, _len, _len1, _ref;
+  var axis, changed, domains, filtered, modified, oppAxis, range, reorder, zero, _i, _len, _ref;
   changed = dataChange(vars);
   if (changed || !vars.axes.dataset) {
     vars.axes.dataset = getData(vars);
@@ -39184,22 +39197,7 @@ module.exports = function(vars, opts) {
       }
       vars[axis].reset = true;
       vars[axis].ticks.values = false;
-      if (vars[axis].value === vars.time.value) {
-        ticks = vars.time.solo.value;
-        if (ticks.length > 0 && ticks.length < vars.width.viz / 20) {
-          for (i = _j = 0, _len1 = ticks.length; _j < _len1; i = ++_j) {
-            t = ticks[i];
-            if (t.constructor !== Date) {
-              d = new Date(t.toString());
-              d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
-              ticks[i] = d;
-            }
-          }
-          vars[axis].ticks.values = ticks;
-        } else {
-          vars[axis].ticks.values = false;
-        }
-      } else if (axis === vars.axes.discrete) {
+      if (axis === vars.axes.discrete && vars[axis].value !== vars.time.value) {
         vars[axis].ticks.values = uniques(vars.axes.dataset, vars[axis].value, fetchValue, vars);
       }
       zero = [true, axis].indexOf(opts.zero) > 0 ? true : false;
@@ -39759,7 +39757,7 @@ module.exports = function(node, vars) {
 
 
 },{"../../../../../client/pointer.coffee":44,"../../../../../color/legible.coffee":49,"../../../../../core/fetch/color.coffee":67,"../../../../../core/fetch/value.coffee":71,"../../../../../util/copy.coffee":196}],300:[function(require,module,exports){
-var buckets, buffer, createAxis, fetchValue, fontSizes, formatPower, labelPadding, resetMargins, superscript, textwrap;
+var buckets, buffer, createAxis, fetchValue, fontSizes, formatPower, labelPadding, resetMargins, superscript, textwrap, uniques;
 
 buckets = require("../../../../../util/buckets.coffee");
 
@@ -39771,8 +39769,10 @@ fontSizes = require("../../../../../font/sizes.coffee");
 
 textwrap = require("../../../../../textwrap/textwrap.coffee");
 
+uniques = require("../../../../../util/uniques.coffee");
+
 module.exports = function(vars, opts) {
-  var axis, opp, values, _i, _j, _len, _len1, _ref, _ref1;
+  var axis, formatted, l, lengths, opp, t, tens, ticks, values, _i, _j, _len, _len1, _ref, _ref1;
   vars.axes.margin = resetMargins(vars);
   vars.axes.height = vars.height.viz;
   vars.axes.width = vars.width.viz;
@@ -39780,7 +39780,23 @@ module.exports = function(vars, opts) {
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     axis = _ref[_i];
     if (vars[axis].ticks.values === false) {
-      vars[axis].ticks.values = vars[axis].scale.viz.ticks();
+      if (vars[axis].value === vars.time.value) {
+        ticks = vars.time.solo.value;
+        if (ticks.length) {
+          ticks = ticks.map(function(d) {
+            if (d.constructor !== Date) {
+              d = new Date(t.toString());
+              d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+            }
+            return d;
+          });
+        } else {
+          ticks = vars.data.time.values;
+        }
+        vars[axis].ticks.values = ticks;
+      } else {
+        vars[axis].ticks.values = vars[axis].scale.viz.ticks();
+      }
     }
     if (!vars[axis].ticks.values.length) {
       values = fetchValue(vars, vars.data.viz, vars[axis].value);
@@ -39794,6 +39810,43 @@ module.exports = function(vars, opts) {
       buffer(vars, axis, opts.buffer);
     }
     vars[axis].reset = false;
+    if (vars[axis].value === vars.time.value) {
+      ticks = vars[axis].ticks.values;
+      formatted = ticks.map(function(t) {
+        return vars.data.time.multiFormat(t);
+      });
+      lengths = uniques(formatted.map(function(f) {
+        return f.length;
+      }));
+      lengths.sort(function(a, b) {
+        return b - a;
+      });
+      while (lengths.length) {
+        l = lengths.pop();
+        t = formatted.filter(function(f) {
+          return f.length >= l;
+        });
+        if (t.length > 0 && t.length < vars.width.viz / 40) {
+          ticks = vars[axis].ticks.values.filter(function(t) {
+            return vars.data.time.multiFormat(t).length >= l;
+          });
+          break;
+        }
+      }
+      vars[axis].ticks.visible = ticks;
+    } else if (vars[axis].scale.value === "log") {
+      ticks = vars[axis].ticks.values;
+      tens = ticks.filter(function(t) {
+        return Math.abs(t).toString().charAt(0) === "1";
+      });
+      if (tens.length < 3) {
+        vars[axis].ticks.visible = ticks;
+      } else {
+        vars[axis].ticks.visible = tens;
+      }
+    } else {
+      vars[axis].ticks.visible = vars[axis].ticks.values;
+    }
   }
   if (!vars.small) {
     labelPadding(vars);
@@ -39833,20 +39886,11 @@ labelPadding = function(vars) {
     "font-weight": vars.y.ticks.font.weight
   };
   if (vars.y.scale.value === "log") {
-    yText = vars.y.ticks.values.filter(function(d) {
-      return Math.abs(d).toString().charAt(0) === "1";
-    });
-    yText = yText.map(function(d) {
-      var n;
-      n = 10 + " " + formatPower(Math.round(Math.log(Math.abs(d)) / Math.LN10));
-      if (d < 0) {
-        return "-" + n;
-      } else {
-        return n;
-      }
+    yText = vars.y.ticks.visible.map(function(d) {
+      return formatPower(d);
     });
   } else {
-    yText = vars.y.ticks.values.map(function(d) {
+    yText = vars.y.ticks.visible.map(function(d) {
       return vars.format.value(d, vars.y.value, vars);
     });
   }
@@ -39872,14 +39916,12 @@ labelPadding = function(vars) {
     "font-weight": vars.x.ticks.font.weight
   };
   if (vars.x.scale.value === "log") {
-    xValues = vars.x.ticks.values.filter(function(d) {
-      return d.toString().charAt(0) === "1";
-    });
+    xValues = vars.x.ticks.visible;
     xText = xValues.map(function(d) {
-      return 10 + " " + formatPower(Math.round(Math.log(d) / Math.LN10));
+      return formatPower(d);
     });
   } else {
-    xValues = vars.x.ticks.values;
+    xValues = vars.x.ticks.visible;
     if (typeof xValues[0] === "string") {
       xValues = vars.x.scale.viz.domain().filter(function(d) {
         return d.indexOf("d3plus_buffer_") !== 0;
@@ -39972,25 +40014,18 @@ labelPadding = function(vars) {
 
 createAxis = function(vars, axis) {
   return d3.svg.axis().tickSize(vars[axis].ticks.size).tickPadding(5).orient(axis === "x" ? "bottom" : "left").scale(vars[axis].scale.viz).tickValues(vars[axis].ticks.values).tickFormat(function(d, i) {
-    var hiddenTime, majorLog, n, scale;
+    var scale;
     if (vars[axis].ticks.hidden) {
       return null;
     }
     scale = vars[axis].scale.value;
-    hiddenTime = vars[axis].value === vars.time.value && d % 1 !== 0;
-    majorLog = scale === "log" && Math.abs(d).toString().charAt(0) === "1";
-    if (!hiddenTime && (majorLog || scale !== "log")) {
+    if (vars[axis].ticks.visible.indexOf(d) >= 0) {
       if (scale === "share") {
         return d * 100 + "%";
       } else if (d.constructor === Date) {
         return vars.data.time.multiFormat(d);
       } else if (scale === "log") {
-        n = 10 + " " + formatPower(Math.round(Math.log(Math.abs(d)) / Math.LN10));
-        if (d < 0) {
-          return "-" + n;
-        } else {
-          return n;
-        }
+        return formatPower(d);
       } else {
         return vars.format.value(d, vars[axis].value, vars);
       }
@@ -40003,14 +40038,25 @@ createAxis = function(vars, axis) {
 superscript = "⁰¹²³⁴⁵⁶⁷⁸⁹";
 
 formatPower = function(d) {
-  return (d + "").split("").map(function(c) {
+  var n, p, t;
+  p = Math.round(Math.log(Math.abs(d)) / Math.LN10);
+  t = Math.abs(d).toString().charAt(0);
+  n = 10 + " " + (p + "").split("").map(function(c) {
     return superscript[c];
   }).join("");
+  if (t !== "1") {
+    n = t + " x " + n;
+  }
+  if (d < 0) {
+    return "-" + n;
+  } else {
+    return n;
+  }
 };
 
 
 
-},{"../../../../../core/fetch/value.coffee":71,"../../../../../font/sizes.coffee":98,"../../../../../textwrap/textwrap.coffee":189,"../../../../../util/buckets.coffee":193,"./buffer.coffee":298}],301:[function(require,module,exports){
+},{"../../../../../core/fetch/value.coffee":71,"../../../../../font/sizes.coffee":98,"../../../../../textwrap/textwrap.coffee":189,"../../../../../util/buckets.coffee":193,"../../../../../util/uniques.coffee":199,"./buffer.coffee":298}],301:[function(require,module,exports){
 var mix, textwrap;
 
 mix = require("../../../../../color/mix.coffee");
@@ -40065,23 +40111,27 @@ module.exports = function(vars) {
     });
   };
   tickStyle = function(tick, axis, grid) {
-    var logScale;
-    logScale = vars[axis].scale.value === "log";
+    var color, log;
+    color = grid ? vars[axis].grid.color : vars[axis].ticks.color;
+    log = vars[axis].scale.value === "log";
     return tick.attr("stroke", function(d) {
-      var log;
-      log = logScale && d.toString().charAt(0) !== "1";
+      var visible;
       if (d === 0) {
         return vars[axis].axis.color;
-      } else if (!grid) {
-        return vars[axis].ticks.color;
-      } else if (log) {
-        return mix(vars[axis].grid.color, vars.axes.background.color, 0.5, 1);
+      }
+      visible = vars[axis].ticks.visible.indexOf(d) >= 0;
+      if (visible && (!log || Math.abs(d).toString().charAt(0) === "1")) {
+        return color;
+      } else if (grid) {
+        return mix(color, vars.axes.background.color, 0.4, 1);
       } else {
-        return vars[axis].grid.color;
+        return mix(color, vars.background.value, 0.4, 1);
       }
     }).attr("stroke-width", vars[axis].ticks.width).attr("shape-rendering", vars[axis].ticks.rendering.value);
   };
   tickFont = function(tick, axis) {
+    var log;
+    log = vars[axis].scale.value === "log";
     return tick.attr("font-size", function(d) {
       var type;
       type = d === 0 ? "axis" : "ticks";
@@ -40089,7 +40139,11 @@ module.exports = function(vars) {
     }).attr("fill", function(d) {
       var type;
       type = d === 0 ? "axis" : "ticks";
-      return vars[axis][type].font.color;
+      if (!log || Math.abs(d).toString().charAt(0) === "1") {
+        return vars[axis][type].font.color;
+      } else {
+        return mix(vars[axis][type].font.color, vars.background.value, 0.4, 1);
+      }
     }).attr("font-family", function(d) {
       var type;
       type = d === 0 ? "axis" : "ticks";
@@ -40148,9 +40202,9 @@ module.exports = function(vars) {
   });
   rotated = vars.x.ticks.transform.indexOf("rotate") > 0;
   xStyle = function(axis) {
-    return axis.attr("transform", "translate(0," + vars.axes.height + ")").call(vars.x.axis.svg.scale(vars.x.scale.viz)).selectAll("g.tick").select("text").style("text-anchor", vars.x.ticks.anchor).attr("transform", vars.x.ticks.transform).attr("dominant-baseline", vars.x.ticks.baseline).call(tickFont, "x").each("end", function() {
+    return axis.attr("transform", "translate(0," + vars.axes.height + ")").call(vars.x.axis.svg.scale(vars.x.scale.viz)).selectAll("g.tick").select("text").style("text-anchor", vars.x.ticks.anchor).attr("transform", vars.x.ticks.transform).attr("dominant-baseline", vars.x.ticks.baseline).call(tickFont, "x").each("end", function(d) {
       var height, width;
-      if (!vars.x.ticks.hidden) {
+      if (!vars.x.ticks.hidden && vars.x.ticks.visible.indexOf(d) >= 0) {
         if (vars.x.ticks.wrap) {
           width = rotated ? "maxHeight" : "maxWidth";
           height = !rotated ? "maxHeight" : "maxWidth";
@@ -40337,7 +40391,7 @@ module.exports = function(vars, data) {
   }
   discrete = vars[vars.axes.discrete];
   opposite = vars[vars.axes.opposite];
-  ticks = discrete.ticks.values;
+  ticks = discrete.value === vars.time.value ? vars.data.time.values : discrete.ticks.values;
   offsets = {
     x: vars.axes.margin.left,
     y: vars.axes.margin.top
@@ -40346,7 +40400,7 @@ module.exports = function(vars, data) {
     var depth, id;
     id = fetchValue(vars, d, vars.id.value);
     depth = "depth" in d.d3plus ? d.d3plus.depth : vars.depth.value;
-    return "line_" + stringStrip(id) + "_" + depth;
+    return "nested_" + stringStrip(id) + "_" + depth;
   }).rollup(function(leaves) {
     var availables, i, obj, tester, tick, timeVar, _i, _len;
     availables = uniqueValues(leaves, discrete.value, fetchValue, vars);
@@ -40358,7 +40412,7 @@ module.exports = function(vars, data) {
     }
     for (i = _i = 0, _len = ticks.length; _i < _len; i = ++_i) {
       tick = ticks[i];
-      tester = timeVar ? tick.getTime() : tick;
+      tester = tick.constructor === Date ? tick.getTime() : tick;
       if (availables.indexOf(tester) < 0 && discrete.zerofill.value) {
         obj = {
           d3plus: {}

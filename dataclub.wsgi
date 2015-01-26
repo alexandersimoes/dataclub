@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/web/test.dataviva.info')
+sys.path.insert(0, '/web/dataclub.io')
 
 from dataviva import app as application
 

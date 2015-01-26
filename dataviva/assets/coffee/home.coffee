@@ -119,13 +119,13 @@ onArrowClick = (d) ->
       .classed "disabled", true if next_x is 0
   page_el.style prefix + "transform", "translateX(" + (next_x) + "px)"
 
-addCarousel = ->
+addCarousel = (title, url) ->
   main = document.getElementById("caros")
   section = document.createElement("section")
   section.className = "list"
   div = document.createElement("div")
   h2 = document.createElement("h2")
-  h2.innerText = "Recently Viewed Profiles"
+  h2.innerText = title
   div.appendChild h2
   aprev = document.createElement("a")
   aprev.className = "prev disabled"
@@ -137,7 +137,7 @@ addCarousel = ->
   divscroll = document.createElement("div")
   divscroll.className = "scroller"
   ul = document.createElement("ul")
-  ul.setAttribute "data-parameters", "/stats/recent/pages?limit=10&sort=des"
+  ul.setAttribute "data-parameters", url
   ul.className = "page"
   divscroll.appendChild ul
   section.appendChild divscroll
@@ -146,6 +146,7 @@ addCarousel = ->
       main.insertBefore section, main.firstChild
       d3.selectAll("a.next, a.prev").on "click", onArrowClick
 
-addCarousel()
+addCarousel("Recently Viewed Profiles", "/stats/recent/pages?limit=10&sort=des")
+addCarousel("Suggested Profiles", "/stats/suggested/pages?limit=10")
 
 d3.selectAll("a.next, a.prev").on d3plus.client.pointer.click, onArrowClick

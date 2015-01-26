@@ -5,12 +5,16 @@
 @import "partials/vendor";
 
 #logo {
-//  background-image: url("/static/img/nav/DataViva.png");
+  // background-image: url("/static/img/nav/DataViva.png");
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: bottom left;
+  color: $black;
+  font-family: $oswald;
+  font-size: 29px;
   height: 45px;
   margin: 10px 0;
+  text-align: left;
   width: 150px;
 }
 
@@ -149,6 +153,7 @@ header.sidebar {
   #logo {
     display: block;
     margin: 0 auto;
+    text-align: center;
   }
 
   #links {

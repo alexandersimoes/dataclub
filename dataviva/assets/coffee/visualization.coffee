@@ -103,6 +103,8 @@ config = (build) ->
 
   params = {}
 
+  timeVar = if ["secex", "ei"].indexOf(build.data_type) >= 0 then "month" else "year"
+
   output = build.display_attr
   depths = dataviva.depths[output].slice()
   if depths.length > 2
@@ -154,7 +156,7 @@ config = (build) ->
         interpolate: "monotone"
       timeline: false
       type: "stacked"
-      x: "year"
+      x: timeVar
       y: datasetDefault[build.data_type]
 
   else if build.app_type is "line"
@@ -165,7 +167,7 @@ config = (build) ->
         interpolate: "monotone"
       timeline: false
       type: "line"
-      x: "year"
+      x: timeVar
       y:
         scale: "linear"
         value: datasetDefault[build.data_type]
@@ -354,7 +356,7 @@ config = (build) ->
     id: nesting
     size: datasetDefault[build.data_type]
     text: textLabels
-    time: "year"
+    time: timeVar
 
   defaults.focus =
     tooltip: (["embed", "builder"].indexOf(page) >= 0 or
@@ -605,7 +607,7 @@ config = (build) ->
 
   if build.app_type is "line" or build.app_type is "bar"
     defaults.ui.push
-      label: dataviva.dict.y_scale
+      label: dataviva.dict.scale
       method: (value, viz) ->
         viz.y({"scale": value}).draw()
       value: ["linear", "log"]
@@ -614,6 +616,13 @@ config = (build) ->
       label: dataviva.dict.y
       method: "y"
       value: ["wage_avg", "num_emp"]
+
+  if params.x and params.x is timeVar
+    defaults.ui.push
+      label: "Resolution"
+      method: (v, viz) ->
+        viz.time(v).x(v).draw()
+      value: [{"Monthly": "month"}, {"Yearly": "year"}]
 
   params = configMerge(defaults, params)
 

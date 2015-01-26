@@ -13,7 +13,7 @@
   <div id="featured">
     {%- for profile in featured -%}
       <a href="{{ profile.url() }}" class="featured_link">
-        {{ banner.create(profile) }}
+        {{ banner.create(profile, False) }}
       </a>
     {%- endfor -%}
     <div class="pagination">
