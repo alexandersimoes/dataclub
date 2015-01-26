@@ -403,7 +403,7 @@ dataviva.url = (build, page) ->
     title   = build.title
     replace = window.location.pathname.indexOf(url.split("?")[0]) >= 0
 
-    document.title = "DataViva : " + title if title
+    document.title = "DataClub : " + title if title
 
     if replace
       window.history.replaceState
