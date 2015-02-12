@@ -283,8 +283,8 @@ class Wld(Attrs):
 
     id_2char = db.Column(db.String(2))
     id_3char = db.Column(db.String(3))
-    id_num = db.Column(db.Integer(11))
-    id_mdic = db.Column(db.Integer(11))
+    id_num = db.Column(db.Integer)
+    id_mdic = db.Column(db.Integer)
 
     ymw = db.relationship("Ymw", backref = 'wld', lazy = 'dynamic')
     ympw = db.relationship("Ympw", backref = 'wld', lazy = 'dynamic')
@@ -310,8 +310,8 @@ class Wld_stats(db.Model, AutoSerialize):
     gdp = db.Column(db.Numeric(16,2))
     gdp_per_capita = db.Column(db.Numeric(14,2))
     area = db.Column(db.Float())
-    pop = db.Column(db.Integer(11))
-    pop_density = db.Column(db.Integer(11))
+    pop = db.Column(db.Integer)
+    pop_density = db.Column(db.Integer)
     neighbors = db.Column(db.String(255))
     capital = db.Column(db.String(255))
     gini = db.Column(db.Numeric(3,1))
@@ -332,7 +332,7 @@ class Bra(Attrs):
 
     __tablename__ = 'attrs_bra'
 
-    id_ibge = db.Column(db.Integer(7))
+    id_ibge = db.Column(db.Integer)
 
     depths = [1,3,5,7,9]
 
@@ -385,15 +385,15 @@ class Bra_stats(db.Model, AutoSerialize):
     bra_id = db.Column(db.String(10), db.ForeignKey(Bra.id), primary_key=True)
     demonym = db.Column(db.String(100))
     climate = db.Column(db.String(100))
-    elevation = db.Column(db.Integer(11))
+    elevation = db.Column(db.Integer)
     gdp = db.Column(db.Numeric(14,2))
     gdp_per_capita = db.Column(db.Numeric(14,2))
     area = db.Column(db.Float())
-    pop = db.Column(db.Integer(11))
-    pop_density = db.Column(db.Integer(11))
-    pop_active = db.Column(db.Integer(11))
-    pop_eligible = db.Column(db.Integer(11))
-    pop_employed = db.Column(db.Integer(11))
+    pop = db.Column(db.Integer)
+    pop_density = db.Column(db.Integer)
+    pop_active = db.Column(db.Integer)
+    pop_eligible = db.Column(db.Integer)
+    pop_employed = db.Column(db.Integer)
     neighbors = db.Column(db.String(255))
     airport_dist = db.Column(db.Float())
     airport_name = db.Column(db.String(255))

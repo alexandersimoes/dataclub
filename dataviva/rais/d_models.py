@@ -9,8 +9,8 @@ class Yiod(Rais_sans_growth):
     cbo_id = db.Column(db.String(4), db.ForeignKey(Cbo.id), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    cnae_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    cnae_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Yiod %s.%s.%s.%s>' % (self.year, self.cnae_id, self.cbo_id, self.d_id)
@@ -22,8 +22,8 @@ class Ybid(Rais):
     cnae_id = db.Column(db.String(6), db.ForeignKey(Cnae.id), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
-    cnae_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cnae_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybid %s.%s.%s.%s>' % (self.year, self.bra_id, self.cnae_id, self.d_id)
@@ -36,8 +36,8 @@ class Ybod(Rais):
     cbo_id = db.Column(db.String(4), db.ForeignKey(Cbo.id), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybod %s.%s.%s.%s>' % (self.year, self.bra_id, self.cbo_id, self.d_id)
@@ -49,7 +49,7 @@ class Yod(Rais):
     d_id = db.Column(db.String(1), primary_key=True)
     
     '''specific ID length field'''
-    cbo_id_len = db.Column(db.Integer(1))
+    cbo_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Yod %s.%s.%s>' % (self.year, self.cbo_id, self.d_id)
@@ -61,7 +61,7 @@ class Yid(Rais):
     d_id = db.Column(db.String(1), primary_key=True)
     
     '''specific ID length field'''
-    cnae_id_len = db.Column(db.Integer(1))
+    cnae_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Yid %s.%s.%s>' % (self.year, self.cnae_id, self.d_id)
@@ -72,7 +72,7 @@ class Ybd(Rais):
     bra_id = db.Column(db.String(9), db.ForeignKey(Bra.id), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybd %s.%s.%s>' % (self.year, self.bra_id, self.d_id)
@@ -85,9 +85,9 @@ class Ybiod(Rais_sans_growth):
     cbo_id = db.Column(db.String(4), db.ForeignKey(Cbo.id), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
-    cnae_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cnae_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybiod %s.%s.%s.%s.%s>' % (self.bra_id, self.year, self.cnae_id, self.cbo_id, self.d_id)

@@ -8,8 +8,8 @@ class EiBaseModel(db.Model, AutoSerialize):
     __abstract__ = True
     
     '''Common indicies'''
-    year = db.Column(db.Integer(4), primary_key=True)
-    month = db.Column(db.Integer(2), primary_key=True)
+    year = db.Column(db.Integer, primary_key=True)
+    month = db.Column(db.Integer, primary_key=True)
 
     '''Common values'''
     tax = db.Column(db.Float())

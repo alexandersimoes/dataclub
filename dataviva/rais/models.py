@@ -7,15 +7,15 @@ class Rais(db.Model, AutoSerialize):
     __abstract__ = True
     
     '''Common indicies'''
-    year = db.Column(db.Integer(4), primary_key=True)
+    year = db.Column(db.Integer, primary_key=True)
     
     '''Common values'''
     wage = db.Column(db.Numeric(16,2))
-    num_emp = db.Column(db.Integer(11))
-    num_jobs = db.Column(db.Integer(11))
-    num_est = db.Column(db.Integer(11))
+    num_emp = db.Column(db.Integer)
+    num_jobs = db.Column(db.Integer)
+    num_est = db.Column(db.Integer)
     wage_avg = db.Column(db.Numeric(16,2))
-    age_avg = db.Column(db.Integer(11))
+    age_avg = db.Column(db.Integer)
     '''Common growth cols'''
     wage_growth = db.Column(db.Float())
     wage_growth_5 = db.Column(db.Float())
@@ -27,15 +27,15 @@ class Rais_sans_growth(db.Model, AutoSerialize):
     __abstract__ = True
     
     '''Common indicies'''
-    year = db.Column(db.Integer(4), primary_key=True)
+    year = db.Column(db.Integer, primary_key=True)
     
     '''Common values'''
     wage = db.Column(db.Numeric(16,2))
-    num_emp = db.Column(db.Integer(11))
-    num_jobs = db.Column(db.Integer(11))
-    num_est = db.Column(db.Integer(11))
+    num_emp = db.Column(db.Integer)
+    num_jobs = db.Column(db.Integer)
+    num_est = db.Column(db.Integer)
     wage_avg = db.Column(db.Numeric(16,2))
-    age_avg = db.Column(db.Integer(11))
+    age_avg = db.Column(db.Integer)
 
 class Ii(db.Model):
 
@@ -65,12 +65,12 @@ class Yi(Rais):
     cnae_id = db.Column(db.String(6), db.ForeignKey(Cnae.id), primary_key=True)
     
     '''specific ID length field'''
-    cnae_id_len = db.Column(db.Integer(1))
+    cnae_id_len = db.Column(db.Integer)
     
     '''specific values'''
-    bra_diversity = db.Column(db.Integer(11))
+    bra_diversity = db.Column(db.Integer)
     bra_diversity_eff = db.Column(db.Float())
-    cbo_diversity = db.Column(db.Integer(11))
+    cbo_diversity = db.Column(db.Integer)
     cbo_diversity_eff = db.Column(db.Float())
 
     def __repr__(self):
@@ -84,12 +84,12 @@ class Yb(Rais):
     bra_id = db.Column(db.String(9), db.ForeignKey(Bra.id), primary_key=True)
 
     '''specific ID length field'''
-    bra_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
 
     '''specific values'''
-    cnae_diversity = db.Column(db.Integer(11))
+    cnae_diversity = db.Column(db.Integer)
     cnae_diversity_eff = db.Column(db.Float())
-    cbo_diversity = db.Column(db.Integer(11))
+    cbo_diversity = db.Column(db.Integer)
     cbo_diversity_eff = db.Column(db.Float())
 
     def __repr__(self):
@@ -103,12 +103,12 @@ class Yo(Rais):
     cbo_id = db.Column(db.String(6), db.ForeignKey(Cbo.id), primary_key=True)
 
     '''specific ID length field'''
-    cbo_id_len = db.Column(db.Integer(1))
+    cbo_id_len = db.Column(db.Integer)
 
     '''specific values'''
-    bra_diversity = db.Column(db.Integer(11))
+    bra_diversity = db.Column(db.Integer)
     bra_diversity_eff = db.Column(db.Float())
-    cnae_diversity = db.Column(db.Integer(11))
+    cnae_diversity = db.Column(db.Integer)
     cnae_diversity_eff = db.Column(db.Float())
     
     def __repr__(self):
@@ -129,8 +129,8 @@ class Ybi_Lg(Rais):
     cnae_id = db.Column(db.String(6), db.ForeignKey(Cnae.id), primary_key=True)
     
     '''specific ID length field'''
-    bra_id_len = db.Column(db.Integer(1))
-    cnae_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cnae_id_len = db.Column(db.Integer)
     
     '''specific values'''
     rca = db.Column(db.Float())
@@ -149,8 +149,8 @@ class Ybi(Rais):
     cnae_id = db.Column(db.String(6), db.ForeignKey(Cnae.id), primary_key=True)
     
     '''specific ID length field'''
-    bra_id_len = db.Column(db.Integer(1))
-    cnae_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cnae_id_len = db.Column(db.Integer)
     
     '''specific values'''
     rca = db.Column(db.Float())
@@ -169,8 +169,8 @@ class Ybo(Rais):
     cbo_id = db.Column(db.String(6), db.ForeignKey(Cbo.id), primary_key=True)
 
     '''specific ID length field'''
-    bra_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
     
     def __repr__(self):
         return '<Ybo %d.%s.%s>' % (self.year, self.bra_id, self.cbo_id)
@@ -184,8 +184,8 @@ class Yio(Rais):
     cbo_id = db.Column(db.String(6), db.ForeignKey(Cbo.id), primary_key=True)
     
     '''specific ID length field'''
-    cnae_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    cnae_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
 
     '''specific YIO fields'''
     importance = db.Column(db.Float())
@@ -207,9 +207,9 @@ class Ybio(Rais):
     cbo_id = db.Column(db.String(6), db.ForeignKey(Cbo.id), primary_key=True)
 
     '''specific ID length field'''
-    bra_id_len = db.Column(db.Integer(1))
-    cnae_id_len = db.Column(db.Integer(1))
-    cbo_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    cnae_id_len = db.Column(db.Integer)
+    cbo_id_len = db.Column(db.Integer)
     
     '''specific YBIO fields'''
     mne_micro = db.Column(db.Float())

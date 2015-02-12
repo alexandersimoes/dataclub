@@ -5,10 +5,10 @@ from dataviva.attrs.models import Bra
 class Sc(db.Model, AutoSerialize):
     __abstract__ = True
 
-    year = db.Column(db.Integer(4), primary_key=True)    
+    year = db.Column(db.Integer, primary_key=True)    
     age = db.Column(db.Float())
-    classes = db.Column(db.Integer(11))
-    enrolled = db.Column(db.Integer(11))
+    classes = db.Column(db.Integer)
+    enrolled = db.Column(db.Integer)
     enrolled_growth = db.Column(db.Float())
 
 class Ybd(Sc):
@@ -24,8 +24,8 @@ class Yb(Sc):
     __tablename__ = 'sc_yb'
 
     bra_id = db.Column(db.String(9), db.ForeignKey(Bra.id), primary_key=True)
-    bra_id_len = db.Column(db.Integer(1))
-    num_schools = db.Column(db.Integer(11))
+    bra_id_len = db.Column(db.Integer)
+    num_schools = db.Column(db.Integer)
     
     def __repr__(self):
         return '<Yb {0}.{1}>'.format(self.year, self.bra_id)
@@ -63,8 +63,8 @@ class Ybc(Sc):
     bra_id = db.Column(db.String(9), primary_key=True)
     course_sc_id = db.Column(db.String(5), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
-    course_sc_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    course_sc_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybc %d.%s.%s>' % (self.year, self.bra_id, self.course_sc_id)
@@ -73,7 +73,7 @@ class Yc(Sc):
     __tablename__ = 'sc_yc'
 
     course_sc_id = db.Column(db.String(5), primary_key=True)
-    course_sc_id_len = db.Column(db.Integer(1))
+    course_sc_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybc %d.%s.%s>' % (self.year, self.course_sc_id)
@@ -85,8 +85,8 @@ class Ybcd(Sc):
     course_sc_id = db.Column(db.String(5), primary_key=True)
     d_id = db.Column(db.String(1), primary_key=True)
     
-    bra_id_len = db.Column(db.Integer(1))
-    course_sc_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    course_sc_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ybcd %d.%s.%s.%s>' % (self.year, self.bra_id, self.course_sc_id, self.d_id)

@@ -7,8 +7,8 @@ class Secex(db.Model, AutoSerialize):
     __abstract__ = True
     
     '''Common indicies'''
-    year = db.Column(db.Integer(4), primary_key=True)
-    month = db.Column(db.Integer(2), primary_key=True)
+    year = db.Column(db.Integer, primary_key=True)
+    month = db.Column(db.Integer, primary_key=True)
     
     '''Common values'''
     export_val = db.Column(db.Numeric(16,2))
@@ -35,13 +35,13 @@ class Ymw(Secex):
     
     '''specific values'''
     eci = db.Column(db.Float())
-    bra_diversity = db.Column(db.Integer(11))
+    bra_diversity = db.Column(db.Integer)
     bra_diversity_eff = db.Column(db.Float())
-    hs_diversity = db.Column(db.Integer(11))
+    hs_diversity = db.Column(db.Integer)
     hs_diversity_eff = db.Column(db.Float())
     
     '''specific ID length fields'''
-    wld_id_len = db.Column(db.Integer(1))
+    wld_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ymw {}.{}.{}>'.format(self.year, self.month, self.wld_id)
@@ -55,14 +55,14 @@ class Ymp(Secex):
     
     '''specific values'''
     pci = db.Column(db.Float())
-    bra_diversity = db.Column(db.Integer(11))
+    bra_diversity = db.Column(db.Integer)
     bra_diversity_eff = db.Column(db.Float())
-    wld_diversity = db.Column(db.Integer(11))
+    wld_diversity = db.Column(db.Integer)
     wld_diversity_eff = db.Column(db.Float())
     rca_wld = db.Column(db.Float())
     
     '''specific ID length fields'''
-    hs_id_len = db.Column(db.Integer(1))
+    hs_id_len = db.Column(db.Integer)
     
     def __repr__(self):
         return '<Ymp {0}.{1}.{2}>'.format(self.year, self.month, self.hs_id)
@@ -76,13 +76,13 @@ class Ymb(Secex):
     
     '''specific values'''
     eci = db.Column(db.Float())
-    hs_diversity = db.Column(db.Integer(11))
+    hs_diversity = db.Column(db.Integer)
     hs_diversity_eff = db.Column(db.Float())
-    wld_diversity = db.Column(db.Integer(11))
+    wld_diversity = db.Column(db.Integer)
     wld_diversity_eff = db.Column(db.Float())
     
     '''specific ID length fields'''
-    bra_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ymb {0}.{1}.{2}>'.format(self.year, self.month, self.bra_id)
@@ -102,8 +102,8 @@ class Ympw(Secex):
     wld_id = db.Column(db.String(5), db.ForeignKey(Wld.id), primary_key=True)
     
     '''specific ID length fields'''
-    hs_id_len = db.Column(db.Integer(1))
-    wld_id_len = db.Column(db.Integer(1))
+    hs_id_len = db.Column(db.Integer)
+    wld_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ympw {0}.{1}.{2}.{3}>'.format(self.year, self.month, self.hs_id, self.wld_id)
@@ -126,8 +126,8 @@ class Ymbp(Secex):
     opp_gain_wld = db.Column(db.Float())
     
     '''specific ID length fields'''
-    bra_id_len = db.Column(db.Integer(1))
-    hs_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    hs_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ymbp {0}.{1}.{2}.{3}>'.format(self.year, self.month, self.bra_id, self.hs_id)
@@ -141,8 +141,8 @@ class Ymbw(Secex):
     wld_id = db.Column(db.String(5), db.ForeignKey(Wld.id), primary_key=True)
     
     '''specific ID length fields'''
-    bra_id_len = db.Column(db.Integer(1))
-    wld_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    wld_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ymbw {0}.{1}.{2}.{3}>'.format(self.year, self.month, self.bra_id, self.wld_id)
@@ -163,9 +163,9 @@ class Ymbpw(Secex):
     wld_id = db.Column(db.String(5), db.ForeignKey(Wld.id), primary_key=True)
     
     '''specific ID length fields'''
-    bra_id_len = db.Column(db.Integer(1))
-    hs_id_len = db.Column(db.Integer(1))
-    wld_id_len = db.Column(db.Integer(1))
+    bra_id_len = db.Column(db.Integer)
+    hs_id_len = db.Column(db.Integer)
+    wld_id_len = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Ymbpw {0}.{1}.{2}.{3}.{4}>'.format(self.year, self.month, self.bra_id, self.hs_id, self.wld_id)
