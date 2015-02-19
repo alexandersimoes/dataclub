@@ -251,7 +251,7 @@ class Stat(object):
     def value(self):
         if self.dtype == "attr":
             if self.val == "pop_100km":
-                return sum(dist.bra.stats.pop for dist in self.attr.get_neighbors(100, True))
+                return self.attr.get_neighbors_pop_sum(100)
             if self.val == "prox":
                 attr = self.filter_attr or self.attr
                 if attr.id != "sabra":
@@ -271,6 +271,7 @@ class Stat(object):
                     else:
                         a = self.attr.__class__
                         ids = [b.strip() for b in stat.split(",")]
+                        # TODO batch query
                         return [a.query.get_or_404(x) for x in [b.strip() for b in stat.split(",")]]
                 # If the attribute is the capital, remove it (stats without
                 # a title do not get displayed in the template).
@@ -283,8 +284,11 @@ class Stat(object):
             # raise Exception(resp)
             if resp:
                 if self.type != "val":
-                    resp = [(self.output.query.get(r.get(self.output_id)), r.get(self.val)) for r in resp]
-                    return sorted(resp, key=lambda v: v[1], reverse=True)
+                    data = [(r.get(self.output_id), r.get(self.val)) for r in resp]
+                    attrs = [x for (x,y) in data]
+                    nums = [y for (x,y) in data]
+                    resp = self.output.query.filter(self.output.id.in_(attrs)).all()
+                    return zip(resp, nums)
                 else:
                     return resp[0].get(self.val, None)
         return None
