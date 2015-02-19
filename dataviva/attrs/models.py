@@ -373,6 +373,15 @@ class Bra(Attrs):
             q = q.filter(Distances.bra_id_dest != self.id) # filter out self
         return q.all()
 
+    def get_neighbors_pop_sum(self, dist):
+        q = Distances.query.filter(self.id != Distances.bra_id_dest,
+                                   self.id == Distances.bra_id_origin, Distances.distance <= dist )
+        results = q.all()
+        ids = [x.bra_id_dest for x in results]
+        stat = Bra_stats.query.filter(Bra_stats.bra_id.in_(ids)).all()
+        stat, = Bra_stats.query.with_entities(func.sum(Bra_stats.pop)).filter(Bra_stats.bra_id.in_(ids)).all()
+        return stat[0]
+
     def capital(self):
         return self.stats.capital_dist == 0
 
