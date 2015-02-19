@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, render_template, g, url_for, redirect, req
 from dataviva.profile.profiles import *
 from dataviva.profile import get_list
 from dataviva import view_cache
+from dataviva.utils.decorators import cache_api
 
 import json
 
@@ -25,6 +26,7 @@ def list():
 @mod.route("/<loc>/<loc_id>/")
 @mod.route("/<loc>/<loc_id>/<attr>/")
 @mod.route("/<loc>/<loc_id>/<attr>/<attr_id>/")
+@cache_api("profile_pages")
 # @view_cache.cached(key_prefix='profile-cache/%s')
 def bra_cbo(loc, loc_id = "all", attr = None, attr_id = None):
 
