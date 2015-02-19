@@ -26,7 +26,7 @@ def list():
 @mod.route("/<loc>/<loc_id>/")
 @mod.route("/<loc>/<loc_id>/<attr>/")
 @mod.route("/<loc>/<loc_id>/<attr>/<attr_id>/")
-# @cache_api("profile_pages")
+@cache_api("profile_pages")
 # @view_cache.cached(key_prefix='profile-cache/%s')
 def bra_cbo(loc, loc_id = "all", attr = None, attr_id = None):
 
