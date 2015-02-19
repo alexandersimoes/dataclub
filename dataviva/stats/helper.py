@@ -210,3 +210,30 @@ def generic_join_breakdown(namespace, params, left_table, right_table, join_crit
 
     object_cache(cache_key, pickle.dumps(results))
     return results
+
+# Based on example from http://stackoverflow.com/questions/2440826/collaborative-filtering-in-mysql
+def suggested_profiles(uid, limit=10, offset=0):
+    query_str = '''SELECT similar.page, sum(ub_rank.rank) total_rank
+            FROM (
+            SELECT similar.user_id,count(*) rank
+            FROM account_pageview target
+            join account_pageview similar on target.page=similar.page and target.user_id != similar.user_id
+            where target.user_id = '{0}'
+            group by similar.user_id
+
+        ) ub_rank
+        JOIN account_pageview similar on ub_rank.user_id = similar.user_id
+        left join account_pageview target on target.user_id = '{0}' and target.page = similar.page
+        where target.page is NULL
+        GROUP BY similar.page
+        HAVING total_rank > 1
+        AND similar.page LIKE '/profile/%%'
+        ORDER BY total_rank DESC
+        LIMIT {1}
+        OFFSET {2}
+    '''.format(uid, limit, offset)
+    results = db.engine.execute(query_str)
+    # page_set = set([page.replace('/wld/sabra/cbo', '/cbo') for page,rank in results])
+    results = [parseProfileString(page) for page,rank in results]
+    results = [profile(*arguments) for (profile, arguments) in results]
+    return results

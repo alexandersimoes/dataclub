@@ -13,6 +13,7 @@ from dataviva.utils.gzip_data import gzipped
 from dataviva.profile.profiles import CboProfile
 from dataviva.profile.profiles import BraProfile
 from dataviva.profile.profiles import Course_heduProfile
+from dataviva.stats.helper import suggested_profiles
 
 from dataviva.stats.cache import profile_cache_serialized
 
@@ -126,4 +127,14 @@ def top_occ(year, bra_id):
     sort = request.args.get('sort', 'desc')
 
     results = top_occupations(year, bra_id)
+    return json.dumps(results)
+
+@mod.route('/suggested/pages')
+@view_cache.cached(timeout=600, key_prefix=make_cache_key)
+def suggested_pages():
+    limit = int(request.args.get('limit', 10))
+    offset = int(request.args.get('offset', 0))
+    uid = get_userid()
+    data = suggested_profiles(uid, limit=limit, offset=offset)
+    results = [item.serialize() for item in data]
     return json.dumps(results)
