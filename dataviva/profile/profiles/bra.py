@@ -115,17 +115,17 @@ class BraProfile(Profile):
                             }
                         ]
                     },
-                    {
-                        "title": gettext("Domestic Economy"),
-                        "anchor": "ei",
-                        "builds": [
-                            TreeMap("rais", {"bra": self.attr}, "cnae", size="num_emp"),
-                            TreeMap("ei", {"bra_s": self.attr}, "hs"),
-                            TreeMap("ei", {"bra_r": self.attr}, "hs"),
-                            TreeMap("ei", {"bra_r": self.attr}, "bra_s"),
-                            TreeMap("ei", {"bra_s": self.attr}, "bra_r")
-                        ]
-                    },
+                    # {
+                    #     "title": gettext("Domestic Economy"),
+                    #     "anchor": "ei",
+                    #     "builds": [
+                    #         TreeMap("rais", {"bra": self.attr}, "cnae", size="num_emp"),
+                    #         TreeMap("ei", {"bra_s": self.attr}, "hs"),
+                    #         TreeMap("ei", {"bra_r": self.attr}, "hs"),
+                    #         TreeMap("ei", {"bra_r": self.attr}, "bra_s"),
+                    #         TreeMap("ei", {"bra_s": self.attr}, "bra_r")
+                    #     ]
+                    # },
                     {
                         "title": gettext("Economic Opportunities"),
                         "anchor": "opp",
