@@ -1,7 +1,7 @@
 {% extends "templates/sidebar.html" %}
 
 {% set title = profile.title() %}
-
+{% set sections = profile.sections() %}
 {% block title %}: {{ title }}{% endblock %}
 
 {% block head %}
@@ -12,8 +12,8 @@
 
 {% block legend %}
   <ul>
-    <a href="#"><li class="depth_0">{{ profile.title() }}</li></a>
-    {% for section in profile.sections() recursive %}
+    <a href="#"><li class="depth_0">{{ title }}</li></a>
+    {% for section in sections recursive %}
       {% if section.title and section.anchor %}
         <a href="#{{ section.anchor }}"><li id="link_{{ section.anchor }}" class="depth_{{ loop.depth }}">{{ section.title }}</li></a>
       {% endif %}
@@ -91,7 +91,7 @@
     {% endif %}
 
     {% set buildIndex = [] %}
-    {% for section in profile.sections() recursive %}
+    {% for section in sections recursive %}
 
       {% if section.title %}
         {% if loop.depth == 1 %}</section><section class="paralax">{% endif %}
