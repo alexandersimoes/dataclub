@@ -305,11 +305,13 @@ class BraProfile(Profile):
     def text_intl_trade(self):
         text = []
         bra = self.attr
-        exp = Stat(self, "secex", "export_val").format() or "$0 USD"
-        imp = Stat(self, "secex", "import_val").format() or "$0 USD"
-        year = Stat(self, "secex", "export_val").year()
-        exp_val = Stat(self, "secex", "export_val").value()
-        imp_val = Stat(self, "secex", "import_val").value()
+        exp_stat = Stat(self, "secex", "export_val")
+        imp_stat = Stat(self, "secex", "import_val")
+        exp = exp_stat.format() or "$0 USD"
+        imp = imp_stat.format() or "$0 USD"
+        year = exp_stat.year()
+        exp_val = exp_stat.value()
+        imp_val = imp_stat.value()
         if exp_val and imp_val:
             ratio = max(exp_val, imp_val) / min(exp_val, imp_val)
             if float("{:.2g}".format(ratio)) == 1:
@@ -463,8 +465,9 @@ class BraProfile(Profile):
         #___________________________________
         # Population
         #-----------------------------------
-        pop = Stat(self, "attr", "pop").format()
-        year = Stat(self, "attr", "pop").year()
+        pop_stat = Stat(self, "attr", "pop")
+        pop = pop_stat.format()
+        year = pop_stat.year()
         pop_text = ""
         if pop:
             pop_text = gettext(u"As of %(year)s the estimated population of %(bra)s was %(pop)s", year=year, bra=bra.name(), pop=pop)
@@ -489,8 +492,9 @@ class BraProfile(Profile):
         #___________________________________
         # Exports
         #-----------------------------------
-        year = Stat(self, "secex", "export_val").year()
-        exp_val = Stat(self, "secex", "export_val").value()
+        exp_stat = Stat(self, "secex", "export_val")
+        year = exp_stat.year()
+        exp_val = exp_stat.value()
         imp_val = Stat(self, "secex", "import_val").value()
         if exp_val and imp_val:
             ratio = max(exp_val, imp_val) / min(exp_val, imp_val)
