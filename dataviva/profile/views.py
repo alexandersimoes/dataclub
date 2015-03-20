@@ -47,8 +47,8 @@ def bra_cbo(loc, loc_id = "all", attr = None, attr_id = None):
             profile = profile()
 
     builds = []
-
-    for section in profile.sections():
+    sections = profile.sections()
+    for section in sections:
         parseBuilds(section, builds)
 
     debug = request.args.get('debug', False)
@@ -61,7 +61,7 @@ def bra_cbo(loc, loc_id = "all", attr = None, attr_id = None):
 
     builds = [b.serialize() for b in builds]
 
-    return render_template("profile/index.html", profile = profile, builds = json.dumps(builds))
+    return render_template("profile/index.html", sections=sections, profile = profile, builds = json.dumps(builds))
 
 def parseBuilds(section, builds):
     if "builds" in section:
