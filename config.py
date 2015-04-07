@@ -49,6 +49,8 @@ SQLALCHEMY_DATABASE_URI = "mysql://{0}:{1}@{2}/{3}".format(
 if "DATAVIVA_DB_SOCKET" in os.environ:
     SQLALCHEMY_DATABASE_URI += "?unix_socket=" + get_env_variable("DATAVIVAs_DB_SOCKET")
 
+SQLALCHEMY_POOL_RECYCLE = 3600
+
 ''' If an env var for production is set turn off all debugging support '''
 if "DATAVIVA_PRODUCTION" in os.environ:
     SQLALCHEMY_ECHO = False
